@@ -6,7 +6,7 @@ Clone the repo, run and test the samples, and use the code in your own project. 
 
 - [Samples](#samples-)
 - [Prerequisites](#prerequisites)
-- [Run the app](#Run the app)
+- [Run the app](#run-the-app)
 - [Contact](#contact)
 
 ## Samples
