@@ -1,79 +1,88 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Agora Video SDK for React Native reference app
 
-# Getting Started
+This app demonstrates the use of [Agora's Video SDK](https://docs.agora.io/en/video-calling/get-started/get-started-sdk) for real-time audio and video communication. It is a robust and comprehensive documentation reference app for React Native, designed to enhance your productivity and understanding. It's built to be flexible, easily extensible, and beginner-friendly.
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+Clone the repo, run and test the samples, and use the code in your own project. Enjoy.
 
-## Step 1: Start the Metro Server
+- [Samples](#samples-)
+- [Prerequisites](#prerequisites)
+- [Run this project](#run-this-project)
+- [Contact](#contact)
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+## Samples
 
-To start Metro, run the following command from the _root_ of your React Native project:
+This reference app includes several samples that illustrate the functionality and features of Agora Video and Voice SDKs. Each sample is self-contained and the relevant code can be found in its own folder in the root directory. For more information about each sample, see:
 
-```bash
-# using npm
-npm start
+- [SDK quickstart](./agora-manager)
 
-# OR using Yarn
-yarn start
-```
+To view the UI implementation, open the relevant Activity Class file [here]( android-reference-app/app/src/main/java/io/agora/android_reference_app).
 
-## Step 2: Start your Application
 
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
+## Prerequisites
 
-### For Android
+Before getting started with this reference app, ensure you have the following set up:
 
-```bash
-# using npm
-npm run android
+- [Setting up the development environment](https://reactnative.dev/docs/environment-setup)
+- An IDE of your choice.
+- An Agora account and project
+- A computer with Internet access. Ensure that no firewall is blocking your network communication.
 
-# OR using Yarn
-yarn android
-```
+## Run the app
 
-### For iOS
+1. **Clone the repository**
 
-```bash
-# using npm
-npm run ios
+    To clone the repository to your local machine, open Terminal and navigate to the directory where you want to clone the repository. Then, use the following command:
 
-# OR using Yarn
-yarn ios
-```
+    ```sh
+    git clone https://github.com/AgoraIO/video-sdk-samples-reactnative.git
+    ```
 
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
+1. **Open the project**
 
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
+   Open your project in an IDE and launch a terminal. Then, install the required dependencies:
 
-## Step 3: Modifying your App
+   ``bash
+   yarn install
+   ```   
 
-Now that you have successfully run the app, let's modify it.
+1. **Modify the project configuration**
 
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
+   The app loads connection parameters from the [`config.json`](./src/agora-manager/config.ts) file. Ensure that the file is populated with the required parameter values before running the application.
 
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
+    - `uid`: The user ID associated with the application.
+    - `appId`: (Required) The unique ID for the application obtained from [Agora Console](https://console.agora.io). 
+    - `channelName`: The default name of the channel to join.
+    - `rtcToken`:An token generated for `channelName`. You generate a temporary token using the [Agora token builder](https://agora-token-generator-demo.vercel.app/).
+    - `serverUrl`: The URL for the token generator. See [Secure authentication with tokens](authentication-workflow) for information on how to set up a token server.
+    - `tokenExpiryTime`: The time in seconds after which a token expires.
 
-## Congratulations! :tada:
+    If a valid `serverUrl` is provided, all samples use the token server to obtain a token except the **SDK quickstart** project that uses the `rtcToken`. If a `serverUrl` is not specified, all samples except **Secure authentication with tokens** use the `rtcToken` from `config.json`.
 
-You've successfully run and modified your React Native App. :partying_face:
+1. **Build and run the project**
 
-### Now what?
+   - **For IOS**:
+      
+      1. Install CocoaPods:
+         ```
+          npx pod-install
+         ```
+      2. Run your project inside an IOS emulator:
+       
+         ```
+         yarn run android
+         ```
+   - **For Android**:
+      
+      1. Run your project inside an Android emulator
+         
+         ```
+         yarn run ios
+         ```
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
+1. **Run the samples in the reference app**
 
-# Troubleshooting
+    From the main app screen, choose and launch a sample.
 
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+## Contact
 
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+If you have any questions, issues, or suggestions, please file an issue in our [GitHub Issue Tracker](https://github.com/AgoraIO/video-sdk-samples-reactnative/issues).
