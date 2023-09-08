@@ -6,7 +6,7 @@ Clone the repo, run and test the samples, and use the code in your own project. 
 
 - [Samples](#samples-)
 - [Prerequisites](#prerequisites)
-- [Run this project](#run-this-project)
+- [Run the app](#Run the app)
 - [Contact](#contact)
 
 ## Samples
@@ -41,7 +41,7 @@ Before getting started with this reference app, ensure you have the following se
 
    Open your project in an IDE and launch a terminal. Then, install the required dependencies:
 
-   ``bash
+   ```bash
    yarn install
    ```   
 
