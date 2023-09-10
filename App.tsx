@@ -1,26 +1,50 @@
 import React, { useState } from 'react';
-import { View, Text, SafeAreaView, StyleSheet } from 'react-native';
+import { SafeAreaView } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import GetStartedSDK from './src/get-started-sdk/getStartedSDK';
+import config from './src/agora-manager/config';
 
 const App = () => {
-  const [selectedValue, setSelectedValue] = useState('option1');
+  const [selectedValues, setSelectedValues] = useState({
+    selectedProduct: 'Video Calling',
+    selectedSampleCode: '',
+  });
+
+  const handleProductChange = (itemValue: string) => {
+    setSelectedValues((prevValues) => ({
+      ...prevValues,
+      selectedProduct: itemValue,
+    }));
+    config.product = itemValue;
+  };
+
+  const handleSampleCodeChange = (itemValue: string) => {
+    setSelectedValues((prevValues) => ({
+      ...prevValues,
+      selectedSampleCode: itemValue,
+    }));
+  };
 
   return (
-    <SafeAreaView style = {{alignContent: 'flex-end', alignItems: 'stretch'}}>
+    <SafeAreaView>
       <Picker
-        selectedValue={selectedValue}
-        onValueChange={(itemValue: string) => setSelectedValue(itemValue)}
+        selectedValue={selectedValues.selectedProduct}
+        onValueChange={handleProductChange}
       >
-        <Picker.Item label="Select an option:" value="" />
-        <Picker.Item label="Get Started" value="getStarted" />
-        {/* Add more options as needed */}
+        <Picker.Item label="Video Calling" value="Video Calling" />
+        <Picker.Item label="ILS" value="ILS" />
       </Picker>
-      {selectedValue === 'getStarted' && (
-          <GetStartedSDK />
-        )}
+      <Picker
+        selectedValue={selectedValues.selectedSampleCode}
+        onValueChange={handleSampleCodeChange}
+      >
+        <Picker.Item label="Select a sample code:" value="" />
+        <Picker.Item label="Get Started" value="getStarted" />
+      </Picker>
+      {selectedValues.selectedSampleCode === 'getStarted' && (
+        <GetStartedSDK />
+      )}
     </SafeAreaView>
-
   );
 };
 

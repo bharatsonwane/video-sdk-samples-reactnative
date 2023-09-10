@@ -2,7 +2,7 @@ import {EncryptionMode} from 'react-native-agora'
 const config: configType = {
     uid: 0,
     appId: "",
-    channelName: "",
+    channelName: "demo",
     rtcToken: "",
     serverUrl: "",
     tokenExpiryTime: 600,
@@ -10,6 +10,7 @@ const config: configType = {
     encryptionMode: EncryptionMode.Aes128Gcm2,
     salt: "",
     cipherKey: "",
+    product: ""
   };
   
   export type configType = {
@@ -23,6 +24,7 @@ const config: configType = {
     encryptionMode: EncryptionMode;
     salt: string;
     cipherKey: string;
+    product: string
   };
   
   export default config;
