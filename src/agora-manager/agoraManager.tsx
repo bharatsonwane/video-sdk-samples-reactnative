@@ -20,8 +20,7 @@ const AgoraManager = () => {
       try {
         const result = await PermissionsAndroid.requestMultiple([
           PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
-          PermissionsAndroid.PERMISSIONS.CAMERA,
-          PermissionsAndroid.PERMISSIONS.INTERNET
+          PermissionsAndroid.PERMISSIONS.CAMERA
         ]);
         if (
           result['android.permission.RECORD_AUDIO'] === 'granted' &&
