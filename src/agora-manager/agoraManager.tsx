@@ -8,7 +8,7 @@ import {
 import { PermissionsAndroid, Platform } from 'react-native';
 import config from './config';
 
-const useAgoraManager = () => {
+const AgoraManager = () => {
   // State variables for managing Agora SDK, call status, and remote user IDs
   const [agoraEngine, setAgoraEngine] = useState<IRtcEngine | null>(null);
   const [joined, setJoined] = useState(false);
@@ -21,6 +21,7 @@ const useAgoraManager = () => {
         const result = await PermissionsAndroid.requestMultiple([
           PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
           PermissionsAndroid.PERMISSIONS.CAMERA,
+          PermissionsAndroid.PERMISSIONS.INTERNET
         ]);
         if (
           result['android.permission.RECORD_AUDIO'] === 'granted' &&
@@ -169,4 +170,4 @@ const useAgoraManager = () => {
   };
 };
 
-export default useAgoraManager;
+export default AgoraManager;

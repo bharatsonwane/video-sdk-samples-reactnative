@@ -22,6 +22,7 @@ interface AgoraUIProps {
   handleLeaveCall: () => void;
   handleJoinCall: () => void;
   setUserRole: (role: string) => void;
+  additionalContent?: React.ReactNode;
 }
 
 const AgoraUI: React.FC<AgoraUIProps> = ({
@@ -30,6 +31,7 @@ const AgoraUI: React.FC<AgoraUIProps> = ({
   handleLeaveCall,
   handleJoinCall,
   setUserRole,
+  additionalContent,
 }: AgoraUIProps) => {
   const [remoteUIs, setRemoteUIs] = useState<JSX.Element[]>([]);
   const [clientRole, setRole] = useState(false);
@@ -37,12 +39,9 @@ const AgoraUI: React.FC<AgoraUIProps> = ({
   useEffect(() => {
     // Create remote UI components when remoteUids change
     const newRemoteUIs = remoteUids.map((uid) => (
-      <View key={uid}> {/* Wrap the Text in a View */}
+      <View key={uid}>
         <Text>Remote user uid: {uid}</Text>
-        <RtcSurfaceView
-          canvas={{ uid }}
-          style={styles.videoView}
-        />
+        <RtcSurfaceView canvas={{ uid }} style={styles.videoView} />
       </View>
     ));
 
@@ -77,6 +76,11 @@ const AgoraUI: React.FC<AgoraUIProps> = ({
         </View>
       )}
       <View>
+        {additionalContent && (
+          <View>
+            {additionalContent}
+          </View>
+        )}
         <Button
           title={joined ? 'Leave' : 'Join'}
           onPress={() => {
@@ -92,10 +96,7 @@ const AgoraUI: React.FC<AgoraUIProps> = ({
         {joined ? (
           <View key={0}>
             <Text>Local user uid: {0}</Text>
-            <RtcSurfaceView
-              canvas={{ uid: 0 }}
-              style={styles.videoView}
-            />
+            <RtcSurfaceView canvas={{ uid: 0 }} style={styles.videoView} />
           </View>
         ) : (
           <Text>Join a channel</Text>
