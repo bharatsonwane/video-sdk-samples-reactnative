@@ -1,33 +1,33 @@
 # Agora Video SDK for React Native reference app
 
-This app demonstrates the use of [Agora's Video SDK](https://docs.agora.io/en/video-calling/get-started/get-started-sdk) for real-time audio and video communication. It is a robust and comprehensive documentation reference app for React Native, designed to enhance your productivity and understanding. It's built to be flexible, easily extensible, and beginner-friendly.
+This app demonstrates the use of [Agora Video SDK for React Native](https://docs.agora.io/en/video-calling/get-started/get-started-sdk) for real-time audio and video communication. It is a robust and comprehensive documentation reference app for React Native, designed to enhance your productivity and understanding. Clone the repo, run and test the samples, and use the code in your own project. Enjoy.
 
-Clone the repo, run and test the samples, and use the code in your own project. Enjoy.
-
-- [Samples](#samples-)
+- [Samples](#samples)
 - [Prerequisites](#prerequisites)
-- [Run the app](#run-the-app)
+- [Run this project](#run-this-project)
 - [Contact](#contact)
 
 ## Samples
 
 This reference app includes several samples that illustrate the functionality and features of Agora Video and Voice SDKs. Each sample is self-contained and the relevant code can be found in its own folder in the root directory. For more information about each sample, see:
 
-- [SDK quickstart](./agora-manager)
-
-To view the UI implementation, open the relevant Activity Class file [here]( android-reference-app/app/src/main/java/io/agora/android_reference_app).
+- [SDK quickstart](./src/get-started-sdk/) - The minimum code you need to integrate high-quality, low-latency Video Calling features into your app using Video SDK.
+- [Secure authentication with tokens](./src/authentication-workflow) - Quickly set up an authentication token
+  server, retrieve a token from the server, and use it to connect securely to the SD-RTN as a specific user.
 
 
 ## Prerequisites
 
 Before getting started with this reference app, ensure you have the following set up:
 
-- [Setting up the development environment](https://reactnative.dev/docs/environment-setup)
+- [A React Native development environment](https://reactnative.dev/docs/environment-setup).
 - An IDE of your choice.
-- An Agora account and project
+- An Agora account and project.
 - A computer with Internet access. Ensure that no firewall is blocking your network communication.
 
-## Run the app
+## Run this project
+
+To run this reference app, take the following steps:
 
 1. **Clone the repository**
 
@@ -47,7 +47,7 @@ Before getting started with this reference app, ensure you have the following se
 
 1. **Modify the project configuration**
 
-   The app loads connection parameters from the [`config.json`](./src/agora-manager/config.ts) file. Ensure that the file is populated with the required parameter values before running the application.
+   The app loads connection parameters from [`./src/agora-manager/config.ts`](./src/agora-manager/config.ts). Ensure that the file is populated with the required parameter values before running the application.
 
     - `uid`: The user ID associated with the application.
     - `appId`: (Required) The unique ID for the application obtained from [Agora Console](https://console.agora.io). 
@@ -69,14 +69,14 @@ Before getting started with this reference app, ensure you have the following se
       2. Run your project inside an IOS emulator:
        
          ```
-         yarn run android
+         yarn run ios
          ```
    - **For Android**:
       
-      1. Run your project inside an Android emulator
+      1. Run your project inside an Android emulator:
          
          ```
-         yarn run ios
+         yarn run android
          ```
 
 1. **Run the samples in the reference app**
