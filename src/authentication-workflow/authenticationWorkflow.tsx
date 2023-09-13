@@ -1,24 +1,34 @@
 import React, { useState } from "react";
 import AgoraManager from "../agora-manager/agoraManager";
 import AgoraUI from "../agora-manager/agoraUI";
-import config from "../agora-manager/config";
-import { View, TextInput } from "react-native";
+import { TextInput, View, alert } from "react-native"; // Removed Button import
 
 const AuthenticationWorkflow = () => {
   const agoraManager = AgoraManager();
   const [channelName, setChannelName] = useState("");
 
-  // Create an instance of the engine and join the channel
+  // Function to handle joining the call
   const handleJoinCall = async () => {
-    if (channelName !== "") {
-      await agoraManager.fetchRTCToken(channelName); // Use the provided channelName
+    if (channelName.trim() === "") {
+      alert("Please enter a valid channel name.");
+      return;
     }
-    await agoraManager.joinCall();
+    try {
+      await agoraManager.fetchRTCToken(channelName);
+      await agoraManager.joinCall();
+    } catch (error) {
+      console.error("Error joining the call:", error);
+      alert("An error occurred while joining the call.");
+    }
   };
 
-  // Leave the channel and release the engine instance.
+  // Function to handle leaving the call
   const handleLeaveCall = async () => {
-    await agoraManager.leaveCall();
+    try {
+      await agoraManager.leaveCall();
+    } catch (error) {
+      console.error("Error leaving the call:", error);
+    }
   };
 
   return (
@@ -30,16 +40,18 @@ const AuthenticationWorkflow = () => {
       setUserRole={agoraManager.setUserRole}
       additionalContent={
         <View>
-        <TextInput
+          <TextInput
             placeholder="Type a channel name here"
             value={channelName}
             onChangeText={(text) => setChannelName(text)}
             style={{
-                alignSelf: 'center',
-                borderColor: 'black', // Set the border color to black
-                borderWidth: 1, // Add a border width to make it visible
+              alignSelf: "center",
+              borderColor: "black",
+              borderWidth: 1,
+              marginBottom: 10,
+              padding: 5,
             }}
-            />
+          />
         </View>
       }
     />

@@ -22,28 +22,27 @@ import config from "../agora-manager/config";
 
 const EnsureCallQuality = () => {
   const agoraManager = AgoraManager();
+
+  // State variables
   const [quality, setQuality] = useState(''); // Indicates network quality
   const [isHighQuality, setVideoQuality] = useState(false); // Quality of the remote video stream being played.
   const [isEchoTestRunning, SetEchoTest] = useState(false); // A variable to track the echo test state.
   const [channelName, setChannelName] = useState("");
 
+  // Function to start a network probe test
   const startProbeTest = () => {
     // Configure a LastmileProbeConfig instance.
     var probeConfig = new LastmileProbeConfig();
-    // Probe the uplink network quality.
-    probeConfig.probeUplink = true;
-    // Probe the downlink network quality.
-    probeConfig.probeDownlink = true;
-    // The expected uplink bitrate (bps). The value range is [100000,5000000].
-    probeConfig.expectedUplinkBitrate = 100000;
-    // The expected downlink bitrate (bps). The value range is [100000,5000000].
-    probeConfig.expectedDownlinkBitrate = 100000;
+    probeConfig.probeUplink = true; // Probe the uplink network quality.
+    probeConfig.probeDownlink = true; // Probe the downlink network quality.
+    probeConfig.expectedUplinkBitrate = 100000; // Expected uplink bitrate (bps).
+    probeConfig.expectedDownlinkBitrate = 100000; // Expected downlink bitrate (bps).
     agoraManager.agoraEngineRef.current?.startLastmileProbeTest(probeConfig);
   };
 
-  // Initialize Agora SDK engine for video
+  // Function to set up the video SDK engine
   const setupVideoSDKEngine = async () => {
-    await agoraManager.setupVideoSDKEngine();
+    await agoraManager.setupAgoraEngine();
     if (agoraManager.agoraEngineRef.current !== null) {
       // Enable the dual stream mode
       agoraManager.agoraEngineRef.current.enableDualStreamMode(true);
@@ -80,7 +79,7 @@ const EnsureCallQuality = () => {
 
       // Configure the log file.
       agoraManager.agoraEngineRef.current?.setLogFile(
-        'Specify\\a\\path\\for\\the\\file\\agorasdk.log'
+        '<Specify the log directory path>\\agorasdk.log'
       );
       agoraManager.agoraEngineRef.current.setLogFileSize(256); // Ranges from 128 - 20480kb.
       agoraManager.agoraEngineRef.current.setLogLevel(LogLevel.LogLevelWarn);
@@ -146,28 +145,29 @@ const EnsureCallQuality = () => {
         }
       );
     }
-  }
+  };
 
+  // Initialize the video SDK engine when the component mounts
   useEffect(() => {
     setupVideoSDKEngine();
   }, []); // Run only on component mount or when the condition changes
 
-  // Create an instance of the engine  and join the channel
+  // Function to join a call
   const handleJoinCall = async () => {
-    if(isEchoTestRunning)
-    {
-        console.log('Please, stop the echo test to join the channel');
-        return;
+    if (isEchoTestRunning) {
+      console.log('Please, stop the echo test to join the channel');
+      return;
     }
     await agoraManager.fetchRTCToken(channelName);
     await agoraManager.joinCall();
   };
 
-  // Leave the channel and release the engine instance.
+  // Function to leave a call
   const handleLeaveCall = async () => {
     await agoraManager.leaveCall();
   };
 
+  // Function to update network quality based on the QualityType
   const updateNetworkStatus = (Quality: QualityType) => {
     if (Quality > 0 && Quality < 3) {
       setQuality('Excellent');
@@ -180,6 +180,7 @@ const EnsureCallQuality = () => {
     }
   };
 
+  // Function to switch remote video stream quality
   const setRemoteStreamQuality = () => {
     if (agoraManager.remoteUids[0] === null) {
       console.log("No remote user in the channel");
@@ -201,6 +202,7 @@ const EnsureCallQuality = () => {
     );
   };
 
+  // Function to start or stop the echo test
   const echoTest = async () => {
     if (agoraManager.agoraEngineRef.current === null) {
       await setupVideoSDKEngine();
@@ -231,23 +233,27 @@ const EnsureCallQuality = () => {
       setUserRole={agoraManager.setUserRole}
       additionalContent={
         <View>
-            <TextInput
+          {/* Input field for channel name */}
+          <TextInput
             placeholder="Type a channel name here"
             value={channelName}
             onChangeText={(text) => setChannelName(text)}
             style={{
-                alignSelf: 'center',
-                borderColor: 'black', // Set the border color to black
-                borderWidth: 1, // Add a border width to make it visible
+              alignSelf: 'center',
+              borderColor: 'black', // Set the border color to black
+              borderWidth: 1, // Add a border width to make it visible
             }}
-            />
-            <Text> Network Quality: {quality}</Text>
-            <View style={{ padding: 2 }}>
-                <Button title={isEchoTestRunning ? "Stop Test" : "Start echo test"} onPress={echoTest} />
-            </View>
-            <View style={{ padding: 2 }}>
-                <Button title="Switch stream quality" onPress={setRemoteStreamQuality} />
-            </View>
+          />
+          {/* Display network quality */}
+          <Text> Network Quality: {quality}</Text>
+          {/* Button to start/stop echo test */}
+          <View style={{ padding: 2 }}>
+            <Button title={isEchoTestRunning ? "Stop Test" : "Start echo test"} onPress={echoTest} />
+          </View>
+          {/* Button to switch remote stream quality */}
+          <View style={{ padding: 2 }}>
+            <Button title="Switch stream quality" onPress={setRemoteStreamQuality} />
+          </View>
         </View>
       }
     />

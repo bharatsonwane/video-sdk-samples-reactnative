@@ -64,7 +64,7 @@ const AgoraManager = () => {
     }
   };
 
-  const initializeAgoraEngine = async () => {
+  const setupAgoraEngine = async () => {
     try {
       await getPermission();
 
@@ -105,7 +105,7 @@ const AgoraManager = () => {
 
   const joinCall = async () => {
     if (agoraEngineRef.current === null) {
-      await initializeAgoraEngine();
+      await setupAgoraEngine();
     }
 
     try {
@@ -179,6 +179,7 @@ const AgoraManager = () => {
     remoteUids,
     setUserRole,
     fetchRTCToken,
+    setupAgoraEngine
   };
 };
 
