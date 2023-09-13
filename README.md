@@ -73,14 +73,14 @@ Before getting started with this reference app, ensure you have the following se
       2. Run your project inside an IOS emulator:
        
          ```bash
-         yarn run android
+         yarn run ios
          ```
    - **For Android**:
       
       1. Run your project inside an Android emulator
          
          ```bash
-         yarn run ios
+         yarn run android
          ```
          Ensure that you have configured a video device for your Android virtual machine.
 
