@@ -13,7 +13,9 @@ Clone the repo, run and test the samples, and use the code in your own project. 
 
 This reference app includes several samples that illustrate the functionality and features of Agora Video and Voice SDKs. Each sample is self-contained and the relevant code can be found in its own folder in the root directory. For more information about each sample, see:
 
-- [SDK quickstart](./agora-manager)
+- [SDK quickstart](./src/agora-manager/agoraManager.tsx)
+- [Secure authentication with tokens](./src/authentication-workflow/authenticationWorkflow.tsx)
+- [Call quality best practice](./src/ensure-call-quality/ensure-call-quality.tsx)
 
 To view the UI implementation, open the relevant Activity Class file [here]( android-reference-app/app/src/main/java/io/agora/android_reference_app).
 
@@ -33,7 +35,7 @@ Before getting started with this reference app, ensure you have the following se
 
     To clone the repository to your local machine, open Terminal and navigate to the directory where you want to clone the repository. Then, use the following command:
 
-    ```sh
+    ```bash
     git clone https://github.com/AgoraIO/video-sdk-samples-reactnative.git
     ```
 
@@ -63,21 +65,24 @@ Before getting started with this reference app, ensure you have the following se
    - **For IOS**:
       
       1. Install CocoaPods:
-         ```
+
+         ```bash
           npx pod-install
          ```
+      
       2. Run your project inside an IOS emulator:
        
-         ```
+         ```bash
          yarn run android
          ```
    - **For Android**:
       
       1. Run your project inside an Android emulator
          
-         ```
+         ```bash
          yarn run ios
          ```
+         Ensure that you have configured a video device for your Android virtual machine.
 
 1. **Run the samples in the reference app**
 

@@ -1,31 +1,32 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import {
   createAgoraRtcEngine,
   ChannelProfileType,
   ClientRoleType,
   IRtcEngine,
+  RtcConnection,
+  UserOfflineReasonType
 } from 'react-native-agora';
 import { PermissionsAndroid, Platform } from 'react-native';
 import config from './config';
 
 const AgoraManager = () => {
-  // State variables for managing Agora SDK, call status, and remote user IDs
-  const [agoraEngine, setAgoraEngine] = useState<IRtcEngine | null>(null);
+  const agoraEngineRef = useRef<IRtcEngine | null>(null);
   const [joined, setJoined] = useState(false);
   const [remoteUids, setRemoteUids] = useState<number[]>([]);
 
-  // Function to request and check permissions (Android specific)
   const getPermission = async () => {
     if (Platform.OS === 'android') {
       try {
         const result = await PermissionsAndroid.requestMultiple([
           PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
-          PermissionsAndroid.PERMISSIONS.CAMERA
+          PermissionsAndroid.PERMISSIONS.CAMERA,
         ]);
-        if (
+        const permissionsGranted =
           result['android.permission.RECORD_AUDIO'] === 'granted' &&
-          result['android.permission.CAMERA'] === 'granted'
-        ) {
+          result['android.permission.CAMERA'] === 'granted';
+
+        if (permissionsGranted) {
           console.log('Permissions granted');
         } else {
           console.log('Permissions denied');
@@ -36,66 +37,81 @@ const AgoraManager = () => {
     }
   };
 
-  // Function to initialize the Agora SDK engine for video
-  const setupVideoSDKEngine = async () => {
+  const fetchRTCToken = async (channelName: string) => {
+    try {
+      if (config.serverUrl !== "") {
+        const response = await fetch(
+          `${config.serverUrl}/rtc/${channelName}/publisher/uid/${config.uid}/?expiry=${config.tokenExpiryTime}`
+        );
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch RTC token');
+        }
+
+        const data = await response.json();
+        console.log("RTC token fetched from server:", data.rtcToken);
+
+        config.rtcToken = data.rtcToken;
+        config.channelName = channelName;
+        return data.rtcToken;
+      } else {
+        console.log("Add the token server URL to fetch a token.");
+        return config.rtcToken;
+      }
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+
+  const initializeAgoraEngine = async () => {
     try {
       await getPermission();
 
-      const engine = createAgoraRtcEngine();
-      engine.registerEventHandler({
-        onJoinChannelSuccess: () => {
-          onJoinChannelSuccess();
-        },
-        onUserJoined: (_connection, Uid) => {
-          onUserJoined(Uid);
-        },
-        onUserOffline: (_connection, Uid) => {
-          onUserOffline(Uid);
-        },
+      agoraEngineRef.current = createAgoraRtcEngine();
+      agoraEngineRef.current.registerEventHandler({
+        onJoinChannelSuccess: onJoinChannelSuccess,
+        onUserJoined: onUserJoined,
+        onUserOffline: onUserOffline,
       });
 
-      engine.initialize({
+      const channelProfile =
+        config.product !== "ILS"
+          ? ChannelProfileType.ChannelProfileLiveBroadcasting
+          : ChannelProfileType.ChannelProfileCommunication;
+
+      agoraEngineRef.current.initialize({
         appId: config.appId,
-        channelProfile: ChannelProfileType.ChannelProfileLiveBroadcasting,
+        channelProfile: channelProfile,
       });
 
-      if (config.product !== "ILS") {
-        engine.setChannelProfile(
-          ChannelProfileType.ChannelProfileLiveBroadcasting
-        );
-      } else {
-        engine.setChannelProfile(ChannelProfileType.ChannelProfileCommunication);
-      }
-
-      engine.enableVideo();
-
-      setAgoraEngine(engine);
+      agoraEngineRef.current.enableVideo();
       console.log('Engine initialized');
     } catch (e) {
       console.error('Error initializing engine:', e);
     }
   };
 
-  // Function to set the user role (Host or Audience)
   const setUserRole = async (role: string) => {
-    if (agoraEngine) {
-      if (role === "Host") {
-        agoraEngine.setClientRole(ClientRoleType.ClientRoleBroadcaster);
-      } else {
-        agoraEngine.setClientRole(ClientRoleType.ClientRoleAudience);
-      }
-    }
-  }
+    if (agoraEngineRef.current) {
+      const clientRole =
+        role === "Host"
+          ? ClientRoleType.ClientRoleBroadcaster
+          : ClientRoleType.ClientRoleAudience;
 
-  // Function to join the call
-  const joinCall = async () => {
-    if (agoraEngine === null) {
-      return;
+      agoraEngineRef.current.setClientRole(clientRole);
     }
+  };
+
+  const joinCall = async () => {
+    if (agoraEngineRef.current === null) {
+      await initializeAgoraEngine();
+    }
+
     try {
-      agoraEngine.startPreview();
-      agoraEngine.joinChannel(
-        config.token,
+      agoraEngineRef.current?.startPreview();
+      agoraEngineRef.current?.joinChannel(
+        config.rtcToken,
         config.channelName,
         config.uid,
         {
@@ -108,11 +124,11 @@ const AgoraManager = () => {
     }
   };
 
-  // Function to leave the call
   const leaveCall = async () => {
     try {
-      await agoraEngine?.leaveChannel();
-      setAgoraEngine(null);
+      await agoraEngineRef.current?.leaveChannel();
+      agoraEngineRef.current?.release();
+      agoraEngineRef.current = null;
       setRemoteUids([]);
       setJoined(false);
       console.log('You left the channel');
@@ -121,51 +137,48 @@ const AgoraManager = () => {
     }
   };
 
-  // Function to display messages
   const showMessage = (msg: any) => {
     console.log(msg);
   };
 
-  // Event handler for successful channel join
   const onJoinChannelSuccess = () => {
     showMessage('Successfully joined the channel ' + config.channelName);
-    setJoined(true);
   };
 
-  // Event handler for remote user join
-  const onUserJoined = (Uid: number) => {
-    showMessage('Remote user joined with uid ' + Uid);
+  const onUserJoined = (connection: RtcConnection, remoteUid: number, elapsed: number) => {
+    showMessage('Remote user joined with uid ' + remoteUid);
 
-    if (!remoteUids.includes(Uid)) {
-      setRemoteUids([...remoteUids, Uid]);
+    if (!remoteUids.includes(remoteUid)) {
+      setRemoteUids([...remoteUids, remoteUid]);
     }
   };
 
-  // Event handler for remote user leave
-  const onUserOffline = (Uid: number) => {
-    showMessage('Remote user left the channel. uid: ' + Uid);
-    setRemoteUids(remoteUids.filter((uid) => uid !== Uid));
+  const onUserOffline = (connection: RtcConnection, remoteUid: number, reason: UserOfflineReasonType) => {
+    showMessage('Remote user left the channel. uid: ' + remoteUid + ' , Reason:' + reason);
+    setRemoteUids(remoteUids.filter((uid) => uid !== remoteUid));
   };
 
-  // Cleanup effect (on component unmount)
   useEffect(() => {
     return () => {
-      // Release resources and remove event handlers here if needed
-      if (agoraEngine) {
-        agoraEngine.release();
+      if (agoraEngineRef.current) {
+        try {
+          agoraEngineRef.current.release();
+          console.log('Engine destroyed');
+        } catch (error) {
+          console.error('Error releasing resources:', error);
+        }
       }
     };
-  }, [agoraEngine]);
+  }, []);
 
-  // Return the functions and state variables for use in the component
   return {
-    agoraEngine,
+    agoraEngineRef,
     joinCall,
     leaveCall,
     joined,
     remoteUids,
-    setupVideoSDKEngine,
     setUserRole,
+    fetchRTCToken,
   };
 };
 
