@@ -13,7 +13,7 @@ This reference app includes several samples that illustrate the functionality an
 
 - [SDK quickstart](./src/get-started-sdk/) - The minimum code you need to integrate high-quality, low-latency Video Calling features into your app using Video SDK.
 - [Secure authentication with tokens](./src/authentication-workflow) - Quickly set up an authentication token server, retrieve a token from the server, and use it to connect securely to the SD-RTN as a specific user.
-- [Call quality best practice](./src/ensure-call-quality/ensure-call-quality.tsx) - Best practice for optimal call quality.
+- [Call quality best practice](./src/ensure-call-quality) - Best practice for optimal call quality.
   
 
 ## Prerequisites
