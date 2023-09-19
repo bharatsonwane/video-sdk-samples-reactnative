@@ -12,9 +12,9 @@ This app demonstrates the use of [Agora Video SDK for React Native](https://docs
 This reference app includes several samples that illustrate the functionality and features of Agora Video and Voice SDKs. Each sample is self-contained and the relevant code can be found in its own folder in the root directory. For more information about each sample, see:
 
 - [SDK quickstart](./src/get-started-sdk/) - The minimum code you need to integrate high-quality, low-latency Video Calling features into your app using Video SDK.
-- [Secure authentication with tokens](./src/authentication-workflow) - Quickly set up an authentication token
-  server, retrieve a token from the server, and use it to connect securely to the SD-RTN as a specific user.
-
+- [Secure authentication with tokens](./src/authentication-workflow) - Quickly set up an authentication token server, retrieve a token from the server, and use it to connect securely to the SD-RTN as a specific user.
+- [Call quality best practice](./src/ensure-call-quality/ensure-call-quality.tsx) - Best practice for optimal call quality.
+  
 
 ## Prerequisites
 
@@ -33,7 +33,7 @@ To run this reference app, take the following steps:
 
     To clone the repository to your local machine, open Terminal and navigate to the directory where you want to clone the repository. Then, use the following command:
 
-    ```sh
+    ```bash
     git clone https://github.com/AgoraIO/video-sdk-samples-reactnative.git
     ```
 
@@ -63,21 +63,24 @@ To run this reference app, take the following steps:
    - **For IOS**:
       
       1. Install CocoaPods:
+
+         ```bash
+         npx pod-install
          ```
-          npx pod-install
-         ```
+      
       2. Run your project inside an IOS emulator:
        
-         ```
+         ```bash
          yarn run ios
          ```
    - **For Android**:
       
       1. Run your project inside an Android emulator:
          
-         ```
+         ```bash
          yarn run android
          ```
+         Ensure that you have configured a video device for your Android virtual machine.
 
 1. **Run the samples in the reference app**
 

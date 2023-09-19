@@ -17,7 +17,7 @@ const config: configType = {
     uid: number;
     appId: string;
     channelName: string;
-    rtcToken: string | null;
+    rtcToken: string;
     serverUrl: string;
     tokenExpiryTime: number;
     token: string;

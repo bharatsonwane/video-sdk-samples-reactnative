@@ -81,6 +81,7 @@ const AgoraUI: React.FC<AgoraUIProps> = ({
             {additionalContent}
           </View>
         )}
+        <View style = {{padding: 2}}>
         <Button
           title={joined ? 'Leave' : 'Join'}
           onPress={() => {
@@ -91,12 +92,13 @@ const AgoraUI: React.FC<AgoraUIProps> = ({
             }
           }}
         />
+        </View>
       </View>
       <ScrollView style={{ padding: 10 }}>
         {joined ? (
-          <View key={0}>
-            <Text>Local user uid: {0}</Text>
-            <RtcSurfaceView canvas={{ uid: 0 }} style={styles.videoView} />
+          <View key={config.uid}>
+            <Text>Local user uid: {config.uid}</Text>
+            <RtcSurfaceView canvas={{ uid: config.uid }} style={styles.videoView} />
           </View>
         ) : (
           <Text>Join a channel</Text>

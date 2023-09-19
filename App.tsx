@@ -4,6 +4,7 @@ import { Picker } from '@react-native-picker/picker';
 import GetStartedSDK from './src/get-started-sdk/getStartedSDK';
 import config from './src/agora-manager/config';
 import AuthenticationWorkflow from './src/authentication-workflow/authenticationWorkflow';
+import EnsureCallQuality from './src/ensure-call-quality/ensure-call-quality';
 
 const App = () => {
   const [selectedValues, setSelectedValues] = useState({
@@ -42,12 +43,16 @@ const App = () => {
         <Picker.Item label="Select a sample code:" value="" />
         <Picker.Item label="Get Started" value="getStarted" />
         <Picker.Item label="Authentication Workflow" value="authenticationWorkflow"/> 
+        <Picker.Item label="Ensure Call Quality" value="callQuality"/> 
       </Picker>
       {selectedValues.selectedSampleCode === 'getStarted' && (
         <GetStartedSDK />
       )}
       {selectedValues.selectedSampleCode === 'authenticationWorkflow' && (
         <AuthenticationWorkflow />
+      )}
+      {selectedValues.selectedSampleCode === 'callQuality' && (
+        <EnsureCallQuality />
       )}
     </SafeAreaView>
   );
