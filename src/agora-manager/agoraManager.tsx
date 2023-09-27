@@ -7,7 +7,7 @@ import {
   RtcConnection,
   UserOfflineReasonType
 } from 'react-native-agora';
-import { PermissionsAndroid, Platform } from 'react-native';
+import { Alert, PermissionsAndroid, Platform } from 'react-native';
 import config from './config';
 
 const AgoraManager = () => {
@@ -51,12 +51,12 @@ const AgoraManager = () => {
         const data = await response.json();
         console.log("RTC token fetched from server:", data.rtcToken);
 
-        config.rtcToken = data.rtcToken;
+        config.token = data.rtcToken;
         config.channelName = channelName;
         return data.rtcToken;
       } else {
-        console.log("Add the token server URL to fetch a token.");
-        return config.rtcToken;
+        Alert.alert("Add a token server URL in the `config.json` to fetch a token.");
+        return config.token;
       }
     } catch (error) {
       console.error(error);
@@ -111,7 +111,7 @@ const AgoraManager = () => {
     try {
       agoraEngineRef.current?.startPreview();
       agoraEngineRef.current?.joinChannel(
-        config.rtcToken,
+        config.token,
         config.channelName,
         config.uid,
         {

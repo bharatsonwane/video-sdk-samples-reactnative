@@ -1,16 +1,35 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AgoraManager from "../agora-manager/agoraManager";
 import AgoraUI from "../agora-manager/agoraUI";
-import { TextInput, View, alert } from "react-native"; // Removed Button import
+import { TextInput, View, Alert } from "react-native";
+import { RtcConnection } from "react-native-agora";
+import config from "../agora-manager/config";
 
 const AuthenticationWorkflow = () => {
   const agoraManager = AgoraManager();
   const [channelName, setChannelName] = useState("");
 
+  // Function to set up the video SDK engine
+  const setupVideoSDKEngine = async () => {
+    await agoraManager.setupAgoraEngine();
+
+    // Register event handler
+    agoraManager.agoraEngineRef.current?.registerEventHandler({
+      onTokenPrivilegeWillExpire: onTokenPrivilegeWillExpire,
+      // Add more event handlers as needed
+    });
+  };
+
+  // Event handler for token privilege expiration
+  const onTokenPrivilegeWillExpire = (connection: RtcConnection, token: string) => {
+    agoraManager.fetchRTCToken(channelName);
+    agoraManager.agoraEngineRef.current?.renewToken(config.token);
+  };
+
   // Function to handle joining the call
   const handleJoinCall = async () => {
     if (channelName.trim() === "") {
-      alert("Please enter a valid channel name.");
+      Alert.alert("Please enter a valid channel name.");
       return;
     }
     try {
@@ -18,7 +37,7 @@ const AuthenticationWorkflow = () => {
       await agoraManager.joinCall();
     } catch (error) {
       console.error("Error joining the call:", error);
-      alert("An error occurred while joining the call.");
+      Alert.alert("An error occurred while joining the call.");
     }
   };
 
@@ -30,6 +49,11 @@ const AuthenticationWorkflow = () => {
       console.error("Error leaving the call:", error);
     }
   };
+
+  // Initialize the video SDK engine when the component mounts
+  useEffect(() => {
+    setupVideoSDKEngine();
+  }, []); // Run only on component mount
 
   return (
     <AgoraUI

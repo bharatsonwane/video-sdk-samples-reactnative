@@ -16,7 +16,6 @@ import {
   CompressionPreference,
   QualityType,
   LogLevel,
-  EchoTestConfiguration
 } from 'react-native-agora';
 import config from "../agora-manager/config";
 
@@ -211,7 +210,7 @@ const EnsureCallQuality = () => {
     if (!isEchoTestRunning) {
       agoraManager.agoraEngineRef.current?.startEchoTest({
         enableAudio: true,
-        token: config.rtcToken,
+        token: config.token,
         channelId: config.channelName,
         intervalInSeconds: 2,
       });

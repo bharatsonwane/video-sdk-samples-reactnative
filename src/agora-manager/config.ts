@@ -3,10 +3,9 @@ const config: configType = {
     uid: 0,
     appId: "",
     channelName: "demo",
-    rtcToken: "",
+    token: "",
     serverUrl: "",
     tokenExpiryTime: 600,
-    token: "",
     encryptionMode: EncryptionMode.Aes128Gcm2,
     salt: "",
     cipherKey: "",
@@ -17,7 +16,6 @@ const config: configType = {
     uid: number;
     appId: string;
     channelName: string;
-    rtcToken: string;
     serverUrl: string;
     tokenExpiryTime: number;
     token: string;
