@@ -1,13 +1,11 @@
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import AgoraManager from "../agora-manager/agoraManager";
-import AgoraUI from "../agora-manager/agoraUI";
-import { View, Text, Button, TextInput } from "react-native";
 import {
   AudioProfileType,
   AudioScenarioType,
   FrameRate,
   VideoDimensions,
-  OrientationMode,
+  OrientationMode, 
   DegradationPreference,
   VideoMirrorModeType,
   LastmileProbeConfig,
@@ -19,13 +17,12 @@ import {
 } from 'react-native-agora';
 import config from "../agora-manager/config";
 
-const EnsureCallQuality = () => {
+const CallQualityManager = () => {
   const agoraManager = AgoraManager();
 
   // State variables
-  const [quality, setQuality] = useState(''); // Indicates network quality
-  const [isHighQuality, setVideoQuality] = useState(false); // Quality of the remote video stream being played.
-  const [isEchoTestRunning, SetEchoTest] = useState(false); // A variable to track the echo test state.
+  const [networkQuality, setQuality] = useState(''); // Indicates network quality
+  const [isEchoTestRunning, setEchoTestState] = useState(false); // A variable to track the echo test state.
   const [channelName, setChannelName] = useState("");
 
   // Function to start a network probe test
@@ -40,7 +37,7 @@ const EnsureCallQuality = () => {
   };
 
   // Function to set up the video SDK engine
-  const setupVideoSDKEngine = async () => {
+  const setupAgoraEngine = async () => {
     await agoraManager.setupAgoraEngine();
     if (agoraManager.agoraEngineRef.current !== null) {
       // Enable the dual stream mode
@@ -77,9 +74,7 @@ const EnsureCallQuality = () => {
       startProbeTest();
 
       // Configure the log file.
-      agoraManager.agoraEngineRef.current?.setLogFile(
-        '<Specify the log directory path>\\agorasdk.log'
-      );
+      agoraManager.agoraEngineRef.current?.setLogFile(config.logFilePath +'\\agorasdk.log');
       agoraManager.agoraEngineRef.current.setLogFileSize(256); // Ranges from 128 - 20480kb.
       agoraManager.agoraEngineRef.current.setLogLevel(LogLevel.LogLevelWarn);
       agoraManager.agoraEngineRef.current.registerEventHandler(
@@ -146,24 +141,20 @@ const EnsureCallQuality = () => {
     }
   };
 
-  // Initialize the video SDK engine when the component mounts
-  useEffect(() => {
-    setupVideoSDKEngine();
-  }, []); // Run only on component mount or when the condition changes
+  const leaveChannel = async () => {
+    agoraManager.leaveChannel();
+    agoraManager.destroyEngine();
+  };
 
   // Function to join a call
-  const handleJoinCall = async () => {
+  const joinChannel = async () => {
     if (isEchoTestRunning) {
       console.log('Please, stop the echo test to join the channel');
       return;
     }
+    await setupAgoraEngine();
     await agoraManager.fetchRTCToken(channelName);
-    await agoraManager.joinCall();
-  };
-
-  // Function to leave a call
-  const handleLeaveCall = async () => {
-    await agoraManager.leaveCall();
+    await agoraManager.joinChannel();
   };
 
   // Function to update network quality based on the QualityType
@@ -179,84 +170,64 @@ const EnsureCallQuality = () => {
     }
   };
 
-  // Function to switch remote video stream quality
-  const setRemoteStreamQuality = () => {
-    if (agoraManager.remoteUids[0] === null) {
-      console.log("No remote user in the channel");
-      return;
+  const setLowStreamQuality = () =>
+  {
+    if (agoraManager.remoteUIDs[0] === null) {
+        console.log("No remote user in the channel");
+        return;
     }
-    setVideoQuality(!isHighQuality);
-
-    const streamType = isHighQuality
-      ? VideoStreamType.VideoStreamHigh
-      : VideoStreamType.VideoStreamLow;
-
     agoraManager.agoraEngineRef.current?.setRemoteVideoStreamType(
-      agoraManager.remoteUids[0],
-      streamType
-    );
-
-    console.log(
-      `Switching to ${isHighQuality ? 'high-quality' : 'low-quality'} video`
-    );
-  };
-
-  // Function to start or stop the echo test
-  const echoTest = async () => {
-    if (agoraManager.agoraEngineRef.current === null) {
-      await setupVideoSDKEngine();
+        agoraManager.remoteUIDs[0],
+        VideoStreamType.VideoStreamLow
+      );
+  }
+  const setHighStreamQuality = () =>
+  {
+    if (agoraManager.remoteUIDs[0] === null) {
+        console.log("No remote user in the channel");
+        return;
     }
-    SetEchoTest(!isEchoTestRunning);
-    if (!isEchoTestRunning) {
+    agoraManager.agoraEngineRef.current?.setRemoteVideoStreamType(
+        agoraManager.remoteUIDs[0],
+        VideoStreamType.VideoStreamLow
+      );
+  }
+  // Function to start or stop the echo test
+  const startEchoTest = async () => {
+    if (agoraManager.agoraEngineRef.current === null) {
+      await setupAgoraEngine();
+    }
       agoraManager.agoraEngineRef.current?.startEchoTest({
         enableAudio: true,
         token: config.token,
         channelId: config.channelName,
         intervalInSeconds: 2,
       });
-      console.log('Echo test started');
-    } else {
-      agoraManager.agoraEngineRef.current?.stopEchoTest();
-      agoraManager.agoraEngineRef.current?.release();
-      agoraManager.agoraEngineRef.current = null;
-      console.log('Echo test stopped');
-    }
+      setEchoTestState(true);
   };
 
+  const stopEchoTest = async () => {
+    agoraManager.agoraEngineRef.current?.stopEchoTest();
+    agoraManager.agoraEngineRef.current?.release();
+    agoraManager.agoraEngineRef.current = null;
+    setEchoTestState(false);
+  }
+
   return (
-    <AgoraUI
-      joined={agoraManager.joined}
-      handleJoinCall={handleJoinCall}
-      handleLeaveCall={handleLeaveCall}
-      remoteUids={agoraManager.remoteUids}
-      setUserRole={agoraManager.setUserRole}
-      additionalContent={
-        <View>
-          {/* Input field for channel name */}
-          <TextInput
-            placeholder="Type a channel name here"
-            value={channelName}
-            onChangeText={(text) => setChannelName(text)}
-            style={{
-              alignSelf: 'center',
-              borderColor: 'black', // Set the border color to black
-              borderWidth: 1, // Add a border width to make it visible
-            }}
-          />
-          {/* Display network quality */}
-          <Text> Network Quality: {quality}</Text>
-          {/* Button to start/stop echo test */}
-          <View style={{ padding: 2 }}>
-            <Button title={isEchoTestRunning ? "Stop Test" : "Start echo test"} onPress={echoTest} />
-          </View>
-          {/* Button to switch remote stream quality */}
-          <View style={{ padding: 2 }}>
-            <Button title="Switch stream quality" onPress={setRemoteStreamQuality} />
-          </View>
-        </View>
-      }
-    />
+    {
+        startEchoTest,
+        stopEchoTest,
+        setHighStreamQuality,
+        setLowStreamQuality,
+        joinChannel,
+        leaveChannel,
+        setChannelName,
+        joined: agoraManager.joined,
+        remoteUIDs: agoraManager.remoteUIDs,
+        setUserRole: agoraManager.setUserRole,
+        networkQuality
+    }
   );
 };
 
-export default EnsureCallQuality;
+export default CallQualityManager;

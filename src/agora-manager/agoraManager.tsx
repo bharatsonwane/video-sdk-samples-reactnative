@@ -9,11 +9,12 @@ import {
 } from 'react-native-agora';
 import { Alert, PermissionsAndroid, Platform } from 'react-native';
 import config from './config';
+import Toast from 'react-native-toast-message';
 
 const AgoraManager = () => {
   const agoraEngineRef = useRef<IRtcEngine | null>(null);
   const [joined, setJoined] = useState(false);
-  const [remoteUids, setRemoteUids] = useState<number[]>([]);
+  const [remoteUIDs, addRemoteUser] = useState<number[]>([]);
 
   const getPermission = async () => {
     if (Platform.OS === 'android') {
@@ -39,6 +40,10 @@ const AgoraManager = () => {
 
   const fetchRTCToken = async (channelName: string) => {
     try {
+      if(channelName == "")
+      {
+        console.log("You did not input the channel name, joining with the channel name: " + config.channelName);
+      }
       if (config.serverUrl !== "") {
         const response = await fetch(
           `${config.serverUrl}/rtc/${channelName}/publisher/uid/${config.uid}/?expiry=${config.tokenExpiryTime}`
@@ -67,7 +72,6 @@ const AgoraManager = () => {
   const setupAgoraEngine = async () => {
     try {
       await getPermission();
-
       agoraEngineRef.current = createAgoraRtcEngine();
       agoraEngineRef.current.registerEventHandler({
         onJoinChannelSuccess: onJoinChannelSuccess,
@@ -79,7 +83,12 @@ const AgoraManager = () => {
         config.product !== "ILS"
           ? ChannelProfileType.ChannelProfileLiveBroadcasting
           : ChannelProfileType.ChannelProfileCommunication;
-
+      
+      if( config.appId == "")
+      {
+        Alert.prompt("Please specify a valid app ID to initialize the engine instance");
+        return;
+      }
       agoraEngineRef.current.initialize({
         appId: config.appId,
         channelProfile: channelProfile,
@@ -103,11 +112,12 @@ const AgoraManager = () => {
     }
   };
 
-  const joinCall = async () => {
-    if (agoraEngineRef.current === null) {
-      await setupAgoraEngine();
+  const joinChannel = async () => {
+    if(config.channelName === "" || config.token === "")
+    {
+      Alert.prompt("Please specify a channel name and token to join the channel");
+      return;
     }
-
     try {
       agoraEngineRef.current?.startPreview();
       agoraEngineRef.current?.joinChannel(
@@ -124,18 +134,22 @@ const AgoraManager = () => {
     }
   };
 
-  const leaveCall = async () => {
+  const leaveChannel = async () => {
     try {
       await agoraEngineRef.current?.leaveChannel();
-      agoraEngineRef.current?.release();
-      agoraEngineRef.current = null;
-      setRemoteUids([]);
       setJoined(false);
-      console.log('You left the channel');
     } catch (error) {
       console.error('Failed to leave channel:', error);
     }
   };
+
+  const destroyEngine =  async () =>
+  {
+    agoraEngineRef.current?.release();
+    agoraEngineRef.current = null;
+    addRemoteUser([]);
+
+  }
 
   const showMessage = (msg: any) => {
     console.log(msg);
@@ -148,14 +162,14 @@ const AgoraManager = () => {
   const onUserJoined = (connection: RtcConnection, remoteUid: number, elapsed: number) => {
     showMessage('Remote user joined with uid ' + remoteUid);
 
-    if (!remoteUids.includes(remoteUid)) {
-      setRemoteUids([...remoteUids, remoteUid]);
+    if (!remoteUIDs.includes(remoteUid)) {
+      addRemoteUser([...remoteUIDs, remoteUid]);
     }
   };
 
   const onUserOffline = (connection: RtcConnection, remoteUid: number, reason: UserOfflineReasonType) => {
     showMessage('Remote user left the channel. uid: ' + remoteUid + ' , Reason:' + reason);
-    setRemoteUids(remoteUids.filter((uid) => uid !== remoteUid));
+    addRemoteUser(remoteUIDs.filter((uid) => uid !== remoteUid));
   };
 
   useEffect(() => {
@@ -173,13 +187,15 @@ const AgoraManager = () => {
 
   return {
     agoraEngineRef,
-    joinCall,
-    leaveCall,
+    joinChannel,
+    leaveChannel,
     joined,
-    remoteUids,
+    addRemoteUser,
     setUserRole,
     fetchRTCToken,
-    setupAgoraEngine
+    setupAgoraEngine,
+    destroyEngine,
+    remoteUIDs
   };
 };
 
