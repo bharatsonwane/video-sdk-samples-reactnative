@@ -4,54 +4,46 @@ import { View, Text, Button, TextInput, Switch } from "react-native";
 import { AudioMixingStateType } from 'react-native-agora';
 import AudioAndVoiceEffectsManager from "./audioAndVoiceEffectsManager";
 
+const effectCaptions = [
+  'Apply voice effect',
+  'Voice effect: Chat Beautifier',
+  'Voice effect: Singing Beautifier',
+  'Audio effect: Hulk',
+  'Audio effect: Voice Changer',
+  'Audio effect: Voice Equalization',
+];
+
 const AudioAndVoiceEffects = () => {
   const audioAndVoiceEffectsManager = AudioAndVoiceEffectsManager();
-
-  const effectCaptions = [
-    'Apply voice effect',
-    'Voice effect: Chat Beautifier',
-    'Voice effect: Singing Beautifier',
-    'Audio effect: Hulk',
-    'Audio effect: Voice Changer',
-    'Audio effect: Voice Equalization',
-  ];
-
-  // State variables
-  const [channelName, setChannelName] = useState("");
   const [mixingBtnTxt, setMixingBtnTxt] = useState("Mix audio file");
 
-  useEffect(() => 
-  {
-    if(audioAndVoiceEffectsManager.audioMixingState == AudioMixingStateType.AudioMixingStatePaused)
-    {
+  useEffect(() => {
+    const { audioMixingState } = audioAndVoiceEffectsManager;
+    if (audioMixingState === AudioMixingStateType.AudioMixingStatePaused) {
       setMixingBtnTxt("Resume audio mixing");
-    }
-    else if(audioAndVoiceEffectsManager.audioMixingState == AudioMixingStateType.AudioMixingStatePlaying)
-    {
+    } else if (audioMixingState === AudioMixingStateType.AudioMixingStatePlaying) {
       setMixingBtnTxt("Pause audio mixing");
-    }
-    else 
-    {
-      setMixingBtnTxt("Mix Audio File"); // Provide a default value when audioMixingState is null
+    } else {
+      setMixingBtnTxt("Mix Audio File");
     }
   }, [audioAndVoiceEffectsManager.audioMixingState]);
 
   const playSoundEffect = () => {
-    if (!audioAndVoiceEffectsManager.isEffectPlaying) {
-      audioAndVoiceEffectsManager.playSoundEffect();
+    if (audioAndVoiceEffectsManager.joined) {
+      if (!audioAndVoiceEffectsManager.isEffectPlaying) {
+        audioAndVoiceEffectsManager.playSoundEffect();
+      } else {
+        audioAndVoiceEffectsManager.stopSoundEffect();
+      }
     } else {
-      audioAndVoiceEffectsManager.stopSoundEffect();
+      console.log("Please join the channel to try voice effect");
     }
-  }
-  const joinChannel = () =>
-  {
-    audioAndVoiceEffectsManager.fetchRTCToken(channelName);
-    audioAndVoiceEffectsManager.Join();
-  }
+  };
+
   return (
     <AgoraUI
       joined={audioAndVoiceEffectsManager.joined}
-      handleJoinCall={joinChannel}
+      handleJoinCall={audioAndVoiceEffectsManager.Join}
       handleLeaveCall={audioAndVoiceEffectsManager.Leave}
       remoteUids={audioAndVoiceEffectsManager.remoteUIDs}
       setUserRole={audioAndVoiceEffectsManager.setUserRole}
@@ -59,8 +51,7 @@ const AudioAndVoiceEffects = () => {
         <View>
           <TextInput
             placeholder="Type a channel name here"
-            value={channelName}
-            onChangeText={(text) => setChannelName(text)}
+            onChangeText={(text) => audioAndVoiceEffectsManager.setChannelName(text)}
             style={{
               alignSelf: 'center',
               borderColor: 'black',

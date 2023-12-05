@@ -5,18 +5,21 @@ import CallQualityManager from "./callQualityManager";
 
 const EnsureCallQuality = () => {
   const callQualityManager = CallQualityManager();
-  const [isEchoTestRunning, setEchoTestState] = useState(false); // A variable to track the echo test state.
   const [isHighVideoQuality, setVideoQualityState] = useState(false);
 
   const startAndStopEchoTest = async () => {
-    setEchoTestState(!isEchoTestRunning);
-    if(isEchoTestRunning)
+    if (callQualityManager.joined)
     {
-      callQualityManager.startEchoTest;
+      console.log("You can only run the echo test before joining the channel");
+      return;
+    }
+    if(!callQualityManager.isEchoTestRunning)
+    {
+      await callQualityManager.startEchoTest();
     }
     else
     {
-      callQualityManager.stopEchoTest();
+      await callQualityManager.stopEchoTest();
     }
   };
 
@@ -58,7 +61,7 @@ const EnsureCallQuality = () => {
           <Text> Network Quality: {callQualityManager.networkQuality}</Text>
           {/* Button to start/stop echo test */}
           <View style={{ padding: 2 }}>
-            <Button title={isEchoTestRunning ? "Stop Test" : "Start Echo Test"} onPress={startAndStopEchoTest} />
+            <Button title={callQualityManager.isEchoTestRunning ? "Stop Test" : "Start Echo Test"} onPress={startAndStopEchoTest} />
           </View>
           {/* Button to switch remote stream quality */}
           <View style={{ padding: 2 }}>

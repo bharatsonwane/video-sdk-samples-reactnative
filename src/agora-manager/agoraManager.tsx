@@ -51,6 +51,7 @@ const AgoraManager = () => {
 
         if (!response.ok) {
           throw new Error('Failed to fetch RTC token');
+          return;
         }
 
         const data = await response.json();
