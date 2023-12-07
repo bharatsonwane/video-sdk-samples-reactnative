@@ -1,27 +1,16 @@
 import React from "react";
-import AgoraManager from "../agora-manager/agoraManager";
 import AgoraUI from "../agora-manager/agoraUI";
+import GetStartedManager from "./getStartedManager";
 
 const GetStartedSDK = () => {
-  const agoraManager = AgoraManager();
-
-  // Create an instance of the engine and join the channel
-  const handleJoinCall = async () => {
-    await agoraManager.joinCall();
-  };
-
-  // Leave the channel and release the engine instance.
-  const handleLeaveCall = async () => {
-    await agoraManager.leaveCall();
-  };
-
+  const getStartedManager = GetStartedManager();
   return (
     <AgoraUI
-      joined={agoraManager.joined}
-      handleJoinCall={handleJoinCall}
-      handleLeaveCall={handleLeaveCall}
-      remoteUids={agoraManager.remoteUids}
-      setUserRole={agoraManager.setUserRole}
+      joined={getStartedManager.joined}
+      handleJoinCall={getStartedManager.joinChannel}
+      handleLeaveCall={getStartedManager.leaveChannel}
+      remoteUids={getStartedManager.remoteUIDs}
+      setUserRole={getStartedManager.setUserRole}
     />
   );
 };

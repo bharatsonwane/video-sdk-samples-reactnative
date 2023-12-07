@@ -4,7 +4,8 @@ import { Picker } from '@react-native-picker/picker';
 import GetStartedSDK from './src/get-started-sdk/getStartedSDK';
 import config from './src/agora-manager/config';
 import AuthenticationWorkflow from './src/authentication-workflow/authenticationWorkflow';
-import EnsureCallQuality from './src/ensure-call-quality/ensure-call-quality';
+import EnsureCallQuality from './src/ensure-call-quality/ensureCallQuality';
+import AudioAndVoiceEffects from './src/audio-and-voice-effects/audioAndVoiceEffects';
 
 const App = () => {
   const [selectedValues, setSelectedValues] = useState({
@@ -44,6 +45,7 @@ const App = () => {
         <Picker.Item label="Get Started" value="getStarted" />
         <Picker.Item label="Authentication Workflow" value="authenticationWorkflow"/> 
         <Picker.Item label="Ensure Call Quality" value="callQuality"/> 
+        <Picker.Item label="Audio and Voice Effects" value = "audioEffects"/>
       </Picker>
       {selectedValues.selectedSampleCode === 'getStarted' && (
         <GetStartedSDK />
@@ -54,6 +56,11 @@ const App = () => {
       {selectedValues.selectedSampleCode === 'callQuality' && (
         <EnsureCallQuality />
       )}
+      {
+        selectedValues.selectedSampleCode === 'audioEffects' && (
+          <AudioAndVoiceEffects />
+      )}
+      
     </SafeAreaView>
   );
 };
