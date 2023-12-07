@@ -6,6 +6,7 @@ import config from './src/agora-manager/config';
 import AuthenticationWorkflow from './src/authentication-workflow/authenticationWorkflow';
 import EnsureCallQuality from './src/ensure-call-quality/ensureCallQuality';
 import AudioAndVoiceEffects from './src/audio-and-voice-effects/audioAndVoiceEffects';
+import ProductWorkflow from './src/product-workflow/productWorkflow';
 
 const App = () => {
   const [selectedValues, setSelectedValues] = useState({
@@ -46,6 +47,7 @@ const App = () => {
         <Picker.Item label="Authentication Workflow" value="authenticationWorkflow"/> 
         <Picker.Item label="Ensure Call Quality" value="callQuality"/> 
         <Picker.Item label="Audio and Voice Effects" value = "audioEffects"/>
+        <Picker.Item label="Share screen, mute, and volume control" value = "productWorkflow"/>
       </Picker>
       {selectedValues.selectedSampleCode === 'getStarted' && (
         <GetStartedSDK />
@@ -60,7 +62,10 @@ const App = () => {
         selectedValues.selectedSampleCode === 'audioEffects' && (
           <AudioAndVoiceEffects />
       )}
-      
+      {
+        selectedValues.selectedSampleCode === 'productWorkflow' && (
+          <ProductWorkflow />
+      )}
     </SafeAreaView>
   );
 };
