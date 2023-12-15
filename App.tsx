@@ -7,6 +7,7 @@ import AuthenticationWorkflow from './src/authentication-workflow/authentication
 import EnsureCallQuality from './src/ensure-call-quality/ensureCallQuality';
 import AudioAndVoiceEffects from './src/audio-and-voice-effects/audioAndVoiceEffects';
 import ProductWorkflow from './src/product-workflow/productWorkflow';
+import PlayMedia from './src/play-media/playMedia';
 
 const App = () => {
   const [selectedValues, setSelectedValues] = useState({
@@ -48,6 +49,8 @@ const App = () => {
         <Picker.Item label="Ensure Call Quality" value="callQuality"/> 
         <Picker.Item label="Audio and Voice Effects" value = "audioEffects"/>
         <Picker.Item label="Share screen, mute, and volume control" value = "productWorkflow"/>
+        <Picker.Item label="Stream Media to a Channel" value = "playMedia"/>
+
       </Picker>
       {selectedValues.selectedSampleCode === 'getStarted' && (
         <GetStartedSDK />
@@ -66,7 +69,11 @@ const App = () => {
         selectedValues.selectedSampleCode === 'productWorkflow' && (
           <ProductWorkflow />
       )}
-    </SafeAreaView>
+      {
+        selectedValues.selectedSampleCode === 'playMedia'  && (
+          <PlayMedia/>
+      )}
+   </SafeAreaView>
   );
 };
 

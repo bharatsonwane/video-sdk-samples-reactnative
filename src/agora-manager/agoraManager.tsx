@@ -116,7 +116,7 @@ const AgoraManager = () => {
   const joinChannel = async () => {
     if(config.channelName === "" || config.token === "")
     {
-      Alert.prompt("Please specify a channel name and token to join the channel");
+      Alert.prompt("Please specify a channel name and token in the `config.tsx` to join the channel");
       return;
     }
     try {

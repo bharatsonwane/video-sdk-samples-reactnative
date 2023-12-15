@@ -11,9 +11,16 @@ This app demonstrates the use of [Agora Video SDK for React Native](https://docs
 
 This reference app includes several samples that illustrate the functionality and features of Agora Video and Voice SDKs. Each sample is self-contained and the relevant code can be found in its own folder in the root directory. For more information about each sample, see:
 
-- [SDK quickstart](./src/get-started-sdk/) - The minimum code you need to integrate high-quality, low-latency Video Calling features into your app using Video SDK.
-- [Secure authentication with tokens](./src/authentication-workflow) - Quickly set up an authentication token server, retrieve a token from the server, and use it to connect securely to the SD-RTN as a specific user.
-- [Call quality best practice](./src/ensure-call-quality) - Best practice for optimal call quality.
+**Get Started**
+- [SDK quickstart](./src/get-started-sdk)
+- [Secure authentication with tokens](./src/authentication-workflow)
+
+**Develop**
+- [Call quality best practice](./src/ensure-call-quality)
+- [Stream media to a channel](./src/play-media)
+  
+**Integrate Features**
+- [Audio and voice effects](./src/audio-and-voice-effects)
   
 
 ## Prerequisites

@@ -14,7 +14,8 @@ const config: configType = {
     audioFilePath: getResourcePath('effect.mp3'),
     soundEffectId: 1,
     soundEffectFilePath: getResourcePath('effect.mp3'),
-    logFilePath: ""
+    logFilePath: "",
+    mediaLocation: "https://file-examples.com/storage/febf69dcf3656dfd992b0fa/2017/04/file_example_MP4_480_1_5MG.mp4"
   };
   
   export type configType = {
@@ -31,7 +32,8 @@ const config: configType = {
     audioFilePath: string;
     soundEffectId: number;
     soundEffectFilePath: string,
-    logFilePath: string
+    logFilePath: string,
+    mediaLocation: string
   };
   
   export default config;
