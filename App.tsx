@@ -48,6 +48,7 @@ const App = () => {
         <Picker.Item label="Authentication Workflow" value="authenticationWorkflow"/> 
         <Picker.Item label="Ensure Call Quality" value="callQuality"/> 
         <Picker.Item label="Audio and Voice Effects" value = "audioEffects"/>
+        <Picker.Item label="Share screen, mute, and volume control" value = "productWorkflow"/>
         <Picker.Item label="Stream Media to a Channel" value = "playMedia"/>
 
         <Picker.Item label="Share screen, mute, and volume control" value = "productWorkflow"/>
@@ -64,6 +65,10 @@ const App = () => {
       {
         selectedValues.selectedSampleCode === 'audioEffects' && (
         <AudioAndVoiceEffects />
+      )}
+      {
+        selectedValues.selectedSampleCode === 'productWorkflow' && (
+          <ProductWorkflow />
       )}
       {
         selectedValues.selectedSampleCode === 'playMedia'  && (
