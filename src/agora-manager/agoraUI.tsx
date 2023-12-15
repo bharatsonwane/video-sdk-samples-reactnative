@@ -4,7 +4,7 @@ import { RtcSurfaceView } from 'react-native-agora';
 import config from './config';
 
 const styles = StyleSheet.create({
-  videoView: { width: '100%', height: 200 },
+  videoView: { width: '100%', height: 200, flex: 1 },
   switchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -94,14 +94,14 @@ const AgoraUI: React.FC<AgoraUIProps> = ({
         />
         </View>
       </View>
-      <ScrollView style={{ padding: 10 }}>
+      <ScrollView style={{ padding: 5 }}>
         {joined ? (
           <View key={config.uid}>
             <Text>Local user uid: {config.uid}</Text>
             <RtcSurfaceView canvas={{ uid: config.uid }} style={styles.videoView} />
           </View>
         ) : (
-          <Text>Join a channel</Text>
+          <Text style = {{color: '#FFFFFF'}}>Join a channel</Text>
         )}
         {remoteUIs}
       </ScrollView>

@@ -65,11 +65,12 @@ const PlayMedia = () => {
     <View style = {{padding: 10}}>
     {isPlaying && (
         <RtcSurfaceView
-            style={{ width: '100%', height: 200 }}
+            style={{ width: '100%', height: 200,  }}
             canvas={{
                 uid: mediaPlayerRef.current?.getMediaPlayerId(),
                 sourceType: VideoSourceType.VideoSourceMediaPlayer,
-                setupMode:  VideoViewSetupMode.VideoViewSetupAdd
+                setupMode:  VideoViewSetupMode.VideoViewSetupAdd,
+                mediaPlayerId: mediaPlayerRef.current?.getMediaPlayerId()
             }}
         />
     )}
