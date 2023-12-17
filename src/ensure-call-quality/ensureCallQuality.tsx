@@ -50,10 +50,11 @@ const EnsureCallQuality = () => {
           {/* Input field for channel name */}
           <TextInput
             placeholder="Type a channel name here"
+            placeholderTextColor={'white'}
             onChangeText={(text) => callQualityManager.setChannelName(text)}
             style={{
               alignSelf: 'center',
-              borderColor: 'black', // Set the border color to black
+              borderColor: 'white', // Set the border color to black
               borderWidth: 1, // Add a border width to make it visible
             }}
           />

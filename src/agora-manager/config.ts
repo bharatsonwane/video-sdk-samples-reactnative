@@ -15,7 +15,9 @@ const config: configType = {
     soundEffectId: 1,
     soundEffectFilePath: getResourcePath('effect.mp3'),
     logFilePath: "",
-    mediaLocation: "https://www.appsloveworld.com/wp-content/uploads/2018/10/640.mp4"
+    mediaLocation: "https://www.appsloveworld.com/wp-content/uploads/2018/10/640.mp4",
+    encryptionBase64: "",
+    encryptionKey: ""
   };
   
   export type configType = {
@@ -33,7 +35,9 @@ const config: configType = {
     soundEffectId: number;
     soundEffectFilePath: string,
     logFilePath: string,
-    mediaLocation: string
+    mediaLocation: string,
+    encryptionBase64: string,
+    encryptionKey: string
   };
   
   export default config;

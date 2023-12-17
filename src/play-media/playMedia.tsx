@@ -46,10 +46,11 @@ const PlayMedia = () => {
         <View>
           <TextInput
             placeholder="Type a channel name here"
+            placeholderTextColor={'white'}
             onChangeText={(text) => setChannelName(text)}
             style={{
               alignSelf: 'center',
-              borderColor: 'black',
+              borderColor: 'white',
               borderWidth: 1,
             }}
           />
