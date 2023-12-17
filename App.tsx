@@ -7,6 +7,10 @@ import AudioAndVoiceEffects from './src/audio-and-voice-effects/audioAndVoiceEff
 import PlayMedia from './src/play-media/playMedia';
 import DropDownPicker, { ItemType } from 'react-native-dropdown-picker';
 import config from './src/agora-manager/config';
+import CloudProxy from './src/cloud-proxy/cloudProxy';
+import Geofencing from './src/geofencing/geofencing';
+import MediaEncryption from './src/encrypt-media-stream/mediaEncryption';
+
 const App = () => {
   const [selectedProduct, setSelectedProduct] = useState('Video Calling');
   const [selectedFeature, setSelectedFeature] = useState('');
@@ -26,6 +30,10 @@ const App = () => {
     { label: 'Ensure Call Quality', value: 'callQuality' },
     { label: 'Audio and Voice Effects', value: 'audioEffects' },
     { label: 'Stream Media to a Channel', value: 'playMedia' },
+    { label: 'Cloud Proxy', value: 'cloudProxy' },
+    { label: 'Secure Channel Encryption', value: 'mediaEncryption' },
+    { label: 'Geofencing', value: 'geofencing' }
+
   ]);
 
   return (
@@ -79,6 +87,21 @@ const App = () => {
         {
           selectedFeature === 'playMedia'  && (
             <PlayMedia/>
+          )
+        }
+        {
+          selectedFeature === 'cloudProxy'  && (
+            <CloudProxy/>
+          )
+        }
+        {
+          selectedFeature === 'geofencing'  && (
+            <Geofencing/>
+          )
+        }
+        {
+          selectedFeature === 'mediaEncryption'  && (
+            <MediaEncryption/>
           )
         }
       </View>
