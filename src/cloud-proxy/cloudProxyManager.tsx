@@ -10,7 +10,7 @@ const CloudProxyManager = () => {
 
   const joinChannel = async () => {
     try {
-      await setupAgoraEngine();
+      await agoraManager.setupAgoraEngine();
       await agoraManager.fetchRTCToken(channelName);
       await agoraManager.joinChannel();
     } catch (error) {
@@ -24,15 +24,6 @@ const CloudProxyManager = () => {
       agoraManager.destroyEngine();
     } catch (error) {
       console.error("Error leaving channel:", error);
-    }
-  };
-
-  const setupAgoraEngine = async () => {
-    try {
-      await agoraManager.setupAgoraEngine();
-    
-    } catch (error) {
-      console.error("Error setting up Agora Engine:", error);
     }
   };
 

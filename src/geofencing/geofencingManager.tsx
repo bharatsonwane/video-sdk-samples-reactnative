@@ -4,12 +4,12 @@ import { AreaCode } from "react-native-agora";
 
 const GeofencingManager = () => {
     const agoraManager = AgoraManager();
-    const { agoraEngineRef, joined, remoteUIDs, setArea } = agoraManager;
+    const { agoraEngineRef, joined, remoteUIDs, setAgoraRegion } = agoraManager;
     const [channelName, setChannelName] = useState("");
   
     const joinChannel = async () => {
       try {
-        setArea(AreaCode.AreaCodeAs);
+        setAgoraRegion(AreaCode.AreaCodeAs);
         await agoraManager.setupAgoraEngine();
         await agoraManager.fetchRTCToken(channelName);
         await agoraManager.joinChannel();
