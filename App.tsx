@@ -10,6 +10,7 @@ import config from './src/agora-manager/config';
 import CloudProxy from './src/cloud-proxy/cloudProxy';
 import Geofencing from './src/geofencing/geofencing';
 import MediaEncryption from './src/encrypt-media-stream/mediaEncryption';
+import ProductWorkflow from './src/product-workflow/productWorkflow';
 
 const App = () => {
   const [selectedProduct, setSelectedProduct] = useState('Video Calling');
