@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AgoraManager from "../agora-manager/agoraManager";
 import { Alert } from "react-native";
 import { RtcConnection } from "react-native-agora";
@@ -17,6 +17,13 @@ const AuthenticationWorkflowManager = () => {
       onTokenPrivilegeWillExpire: onTokenPrivilegeWillExpire,
     });
   };
+
+  useEffect(() => {
+    return () => {
+        // Release the engine when component unmount.
+        agoraManager.destroyEngine();
+    };
+  }, []);
 
   // Event handler for token privilege expiration
   const onTokenPrivilegeWillExpire = (connection: RtcConnection, token: string) => {

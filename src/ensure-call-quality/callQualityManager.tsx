@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AgoraManager from "../agora-manager/agoraManager";
 import {
   AudioProfileType,
@@ -24,6 +24,14 @@ const CallQualityManager = () => {
   const [networkQuality, setQuality] = useState(''); // Indicates network quality
   const [isEchoTestRunning, setEchoTestState] = useState(false); // A variable to track the echo test state.
   const [channelName, setChannelName] = useState("");
+
+
+  useEffect(() => {
+    return () => {
+        // Release the engine when component unmount.
+        agoraManager.destroyEngine();
+    };
+  }, []);
 
   // Function to start a network probe test
   const startProbeTest = () => {
