@@ -5,17 +5,17 @@ import {
   ClientRoleType,
   IRtcEngine,
   RtcConnection,
-  UserOfflineReasonType
+  UserOfflineReasonType,
+  AreaCode
 } from 'react-native-agora';
 import { Alert, PermissionsAndroid, Platform } from 'react-native';
 import config from './config';
-import Toast from 'react-native-toast-message';
 
 const AgoraManager = () => {
   const agoraEngineRef = useRef<IRtcEngine | null>(null);
   const [joined, setJoined] = useState(false);
   const [remoteUIDs, addRemoteUser] = useState<number[]>([]);
-
+  const [agoraRegion, setAgoraRegion] =  useState<AreaCode>(AreaCode.AreaCodeGlob);
   const getPermission = async () => {
     if (Platform.OS === 'android') {
       try {
@@ -61,7 +61,7 @@ const AgoraManager = () => {
         config.channelName = channelName;
         return data.rtcToken;
       } else {
-        Alert.alert("Add a token server URL in the `config.json` to fetch a token.");
+        console.log("Add a token server URL in the `config.json` to fetch a token.");
         return config.token;
       }
     } catch (error) {
@@ -93,6 +93,7 @@ const AgoraManager = () => {
       agoraEngineRef.current.initialize({
         appId: config.appId,
         channelProfile: channelProfile,
+        areaCode: agoraRegion
       });
 
       agoraEngineRef.current.enableVideo();
@@ -191,6 +192,7 @@ const AgoraManager = () => {
     fetchRTCToken,
     setupAgoraEngine,
     destroyEngine,
+    setAgoraRegion,
     remoteUIDs
   };
 };
