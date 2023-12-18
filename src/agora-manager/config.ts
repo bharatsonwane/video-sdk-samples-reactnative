@@ -15,7 +15,7 @@ const config: configType = {
     soundEffectId: 1,
     soundEffectFilePath: getResourcePath('effect.mp3'),
     logFilePath: "",
-    mediaLocation: "https://file-examples.com/storage/febf69dcf3656dfd992b0fa/2017/04/file_example_MP4_480_1_5MG.mp4"
+    mediaLocation: "https://www.appsloveworld.com/wp-content/uploads/2018/10/640.mp4"
   };
   
   export type configType = {

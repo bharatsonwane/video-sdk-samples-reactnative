@@ -34,6 +34,7 @@ const PlayMediaManager = () => {
       agoraEngineRef.current?.destroyMediaPlayer(mediaPlayerRef);
       setMediaPlayerState(MediaPlayerState.PlayerStateIdle);
       setIsPlaying(false);
+      setIsUrlOpened(false);
     } catch (error) {
       console.error("Error leaving channel:", error);
     }
@@ -47,7 +48,11 @@ const PlayMediaManager = () => {
 
     if (!isUrlOpened) {
         await initializeMediaPlayer();
-        mediaPlayerRef.current?.open(config.mediaLocation, 0);
+        const ret = mediaPlayerRef.current?.open(config.mediaLocation, 0);
+        if(ret !== 0)
+        {
+          Alert.alert("File not found");
+        }
     } else if (mediaPlayerState === MediaPlayerState.PlayerStatePaused) {
         mediaPlayerRef.current?.resume();
     } else if (mediaPlayerState === MediaPlayerState.PlayerStatePlaying) {

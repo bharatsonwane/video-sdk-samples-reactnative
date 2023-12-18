@@ -1,83 +1,89 @@
 import React, { useState } from 'react';
-import { SafeAreaView } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
+import { SafeAreaView, View, Text } from 'react-native';
 import GetStartedSDK from './src/get-started-sdk/getStartedSDK';
-import config from './src/agora-manager/config';
 import AuthenticationWorkflow from './src/authentication-workflow/authenticationWorkflow';
 import EnsureCallQuality from './src/ensure-call-quality/ensureCallQuality';
 import AudioAndVoiceEffects from './src/audio-and-voice-effects/audioAndVoiceEffects';
 import PlayMedia from './src/play-media/playMedia';
+import DropDownPicker, { ItemType } from 'react-native-dropdown-picker';
+import config from './src/agora-manager/config';
 import ProductWorkflow from './src/product-workflow/productWorkflow';
 
 const App = () => {
-  const [selectedValues, setSelectedValues] = useState({
-    selectedProduct: 'Video Calling',
-    selectedSampleCode: '',
-  });
+  const [selectedProduct, setSelectedProduct] = useState('Video Calling');
+  const [selectedFeature, setSelectedFeature] = useState('');
 
-  const handleProductChange = (itemValue: string) => {
-    setSelectedValues((prevValues) => ({
-      ...prevValues,
-      selectedProduct: itemValue,
-    }));
-    config.product = itemValue;
-  };
+  const [openProduct, setOpenProduct] = useState<boolean>(false);
+  const [openFeature, setOpenFeature] = useState<boolean>(false);
 
-  const handleSampleCodeChange = (itemValue: string) => {
-    setSelectedValues((prevValues) => ({
-      ...prevValues,
-      selectedSampleCode: itemValue,
-    }));
-  };
+  const [productItems, setProductItems] = useState<Array<ItemType<string>>>([
+    { label: 'Video Calling', value: 'video-calling' },
+    { label: 'ILS', value: 'ILS' },
+  ]);
+
+  const [sampleCodeItems, setSampleCodeItems] = useState<Array<ItemType<string>>>([
+    { label: 'Select a sample code:', value: '' },
+    { label: 'Get Started', value: 'getStarted' },
+    { label: 'Authentication Workflow', value: 'authenticationWorkflow' },
+    { label: 'Ensure Call Quality', value: 'callQuality' },
+    { label: 'Audio and Voice Effects', value: 'audioEffects' },
+    { label: 'Stream Media to a Channel', value: 'playMedia' },
+  ]);
 
   return (
-    <SafeAreaView>
-      <Picker
-        selectedValue={selectedValues.selectedProduct}
-        onValueChange={handleProductChange}
-      >
-        <Picker.Item label="Video Calling" value="Video Calling" />
-        <Picker.Item label="ILS" value="ILS" />
-      </Picker>
-      <Picker
-        selectedValue={selectedValues.selectedSampleCode}
-        onValueChange={handleSampleCodeChange}
-      >
-        <Picker.Item label="Select a sample code:" value="" />
-        <Picker.Item label="Get Started" value="getStarted" />
-        <Picker.Item label="Authentication Workflow" value="authenticationWorkflow"/> 
-        <Picker.Item label="Ensure Call Quality" value="callQuality"/> 
-        <Picker.Item label="Audio and Voice Effects" value = "audioEffects"/>
-        <Picker.Item label="Share screen, mute, and volume control" value = "productWorkflow"/>
-        <Picker.Item label="Stream Media to a Channel" value = "playMedia"/>
-
-        <Picker.Item label="Share screen, mute, and volume control" value = "productWorkflow"/>
-      </Picker>
-      {selectedValues.selectedSampleCode === 'getStarted' && (
-        <GetStartedSDK />
-      )}
-      {selectedValues.selectedSampleCode === 'authenticationWorkflow' && (
-        <AuthenticationWorkflow />
-      )}
-      {selectedValues.selectedSampleCode === 'callQuality' && (
-        <EnsureCallQuality />
-      )}
-      {
-        selectedValues.selectedSampleCode === 'audioEffects' && (
-        <AudioAndVoiceEffects />
-      )}
-      {
-        selectedValues.selectedSampleCode === 'productWorkflow' && (
-          <ProductWorkflow />
-      )}
-      {
-        selectedValues.selectedSampleCode === 'playMedia'  && (
-        <PlayMedia/>
-      )}
-      {
-        selectedValues.selectedSampleCode === 'productWorkflow' && (
-          <ProductWorkflow />
-      )}
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#1e3a5a' }}>
+      <View style={{ flex: 1, padding: 5 }}>
+        <View style={{ backgroundColor: '#3498db', padding: 10, marginBottom: 16, borderRadius: 10 }}>
+          <Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold',  textAlign : 'center', height: 50}}>Get Started with Agora Video Calling</Text>
+        </View>
+        <DropDownPicker
+          open={openProduct}
+          value={selectedProduct}
+          items={productItems}
+          setOpen={setOpenProduct}
+          setValue={(value) => {
+            setSelectedProduct(value); // Update the local state
+          }}
+          onChangeValue={(product) => {
+            console.log('Selected product value:', product);
+            config.product = product;
+          }}
+          setItems={setProductItems}
+          placeholder='Choose a product'
+          containerStyle={{ borderRadius: 10 }}
+          style={{ backgroundColor: '#3498db' }} // Blue button color
+        />
+        <DropDownPicker
+          open={openFeature}
+          value={selectedFeature}
+          items={sampleCodeItems}
+          setOpen={setOpenFeature}
+          setValue={(value) => {setSelectedFeature(value)}}
+          setItems={setSampleCodeItems}
+          placeholder='Choose a sample code'
+          zIndex={1001} // Ensure a higher zIndex than the first dropdown
+          containerStyle={{ borderRadius: 10, marginTop: 10 }}
+          style={{ backgroundColor: '#3498db' }} // Blue button color
+        />
+        {selectedFeature === 'getStarted' && (
+          <GetStartedSDK />
+        )}
+        {selectedFeature === 'authenticationWorkflow' && (
+          <AuthenticationWorkflow />
+        )}
+        {selectedFeature === 'callQuality' && (
+          <EnsureCallQuality />
+        )}
+        {
+          selectedFeature === 'audioEffects' && (
+            <AudioAndVoiceEffects />
+          )}
+        {
+          selectedFeature === 'playMedia'  && (
+            <PlayMedia/>
+          )
+        }
+      </View>
     </SafeAreaView>
   );
 };
