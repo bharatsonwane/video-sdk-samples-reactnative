@@ -7,6 +7,8 @@ import AudioAndVoiceEffects from './src/audio-and-voice-effects/audioAndVoiceEff
 import PlayMedia from './src/play-media/playMedia';
 import DropDownPicker, { ItemType } from 'react-native-dropdown-picker';
 import config from './src/agora-manager/config';
+import ProductWorkflow from './src/product-workflow/productWorkflow';
+
 const App = () => {
   const [selectedProduct, setSelectedProduct] = useState('Video Calling');
   const [selectedFeature, setSelectedFeature] = useState('');
