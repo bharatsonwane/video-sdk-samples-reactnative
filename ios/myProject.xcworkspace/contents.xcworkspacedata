@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "group:../../../../Downloads/effect.mp3">
+   </FileRef>
+   <FileRef
+      location = "group:../../../../Downloads/agora.png">
+   </FileRef>
+   <FileRef
+      location = "group:../../../../Downloads/applause-01.mp3">
+   </FileRef>
+</Workspace>
