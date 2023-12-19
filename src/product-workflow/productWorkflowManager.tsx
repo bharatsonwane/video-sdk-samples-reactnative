@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import AgoraManager from "../agora-manager/agoraManager";
 import config from "../agora-manager/config";
 import {
@@ -21,6 +21,13 @@ const ProductWorkflowManager = () => {
 
     // State for managing the channel name
     const [channelName, setChannelName] = useState("");
+
+    useEffect(() => {
+        return () => {
+            // Release the engine when component unmount.
+            agoraManager.destroyEngine();
+        };
+    }, []);
 
     const joinChannel = async () => {
         try {

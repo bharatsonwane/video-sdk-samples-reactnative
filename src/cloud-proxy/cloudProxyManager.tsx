@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AgoraManager from "../agora-manager/agoraManager";
 import config from "../agora-manager/config";
 import { ChannelProfileType } from "react-native-agora";
@@ -7,6 +7,14 @@ const CloudProxyManager = () => {
   const agoraManager = AgoraManager();
   const { agoraEngineRef, joined, remoteUIDs } = agoraManager;
   const [channelName, setChannelName] = useState("");
+
+
+  useEffect(() => {
+    return () => {
+        // Release the engine when component unmount.
+        agoraManager.destroyEngine();
+    };
+  }, []);
 
   const joinChannel = async () => {
     try {
