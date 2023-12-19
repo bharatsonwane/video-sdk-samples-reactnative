@@ -2,12 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:../../../../Downloads/effect.mp3">
+      location = "group:myProject.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:../../../../Downloads/agora.png">
-   </FileRef>
-   <FileRef
-      location = "group:../../../../Downloads/applause-01.mp3">
+      location = "group:Pods/Pods.xcodeproj">
    </FileRef>
 </Workspace>
