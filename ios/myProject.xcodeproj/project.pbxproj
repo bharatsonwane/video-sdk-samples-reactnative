@@ -33,9 +33,9 @@
 		00E356EE1AD99517003FC87E /* myProjectTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = myProjectTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* myProjectTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = myProjectTests.m; sourceTree = "<group>"; };
-		099FB58B2B3213B9007C261B /* applause-01.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = "applause-01.mp3"; path = "../../../../Downloads/applause-01.mp3"; sourceTree = "<group>"; };
-		099FB58D2B3213C0007C261B /* agora.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = agora.png; path = ../../../../Downloads/agora.png; sourceTree = "<group>"; };
-		099FB58F2B3213C9007C261B /* effect.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = effect.mp3; path = ../../../../Downloads/effect.mp3; sourceTree = "<group>"; };
+		099FB58B2B3213B9007C261B /* applause-01.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = "applause-01.mp3"; path = "myProject/applause-01.mp3"; sourceTree = SOURCE_ROOT; };
+		099FB58D2B3213C0007C261B /* agora.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = agora.png; path = myProject/agora.png; sourceTree = SOURCE_ROOT; };
+		099FB58F2B3213C9007C261B /* effect.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = effect.mp3; path = myProject/effect.mp3; sourceTree = SOURCE_ROOT; };
 		13B07F961A680F5B00A75B9A /* myProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = myProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = myProject/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = myProject/AppDelegate.mm; sourceTree = "<group>"; };
@@ -498,6 +498,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6V7V2JN9Q4;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = myProject/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -511,6 +512,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = org.reactjs.native.example.AgoraSDK;
 				PRODUCT_NAME = myProject;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -525,6 +527,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6V7V2JN9Q4;
 				INFOPLIST_FILE = myProject/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -537,6 +540,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = org.reactjs.native.example.AgoraSDK;
 				PRODUCT_NAME = myProject;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
