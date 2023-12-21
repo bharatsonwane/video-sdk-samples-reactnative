@@ -22,6 +22,7 @@ const CloudProxy = () => {
               alignSelf: 'center',
               borderColor: 'white',
               borderWidth: 1,
+              height: 30
             }}
             placeholderTextColor={"white"}
           />

@@ -32,6 +32,7 @@ const VirtualBackground = () => {
               alignSelf: 'center',
               borderColor: 'white',
               borderWidth: 1,
+              height: 30
             }}
           />
           <View>
