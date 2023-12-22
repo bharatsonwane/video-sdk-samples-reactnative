@@ -13,6 +13,7 @@ import MediaEncryption from './src/encrypt-media-stream/mediaEncryption';
 import ProductWorkflow from './src/product-workflow/productWorkflow';
 import VirtualBackground from './src/virtual-background/virtualBackground';
 import AINoiseSuppression from './src/ai-noise-suppression/aiNoiseSuppression';
+import SpatialAudio from './src/spatial-audio/spatialAudio';
 
 const App = () => {
   const [selectedProduct, setSelectedProduct] = useState('Video Calling');
@@ -39,6 +40,7 @@ const App = () => {
     { label: 'Screen share, mute, and volume control', value: 'productWorkflow' },
     { label: 'Virtual Background', value: 'virtualBackground' },
     { label: 'AI Noise Suppression', value: 'noiseSuppression' }
+    { label: '3d Spatial Audio', value: 'spatialAudio' }
   ]);
 
   return (
@@ -122,6 +124,11 @@ const App = () => {
         {
           selectedFeature === 'noiseSuppression'  && (
             <AINoiseSuppression/>
+            )
+        }
+        {
+          selectedFeature === 'spatialAudio'  && (
+            <SpatialAudio/>
           )
         }
       </View>
