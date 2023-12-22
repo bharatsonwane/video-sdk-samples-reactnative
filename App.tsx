@@ -12,6 +12,7 @@ import Geofencing from './src/geofencing/geofencing';
 import MediaEncryption from './src/encrypt-media-stream/mediaEncryption';
 import ProductWorkflow from './src/product-workflow/productWorkflow';
 import VirtualBackground from './src/virtual-background/virtualBackground';
+import AINoiseSuppression from './src/ai-noise-suppression/aiNoiseSuppression';
 
 const App = () => {
   const [selectedProduct, setSelectedProduct] = useState('Video Calling');
@@ -36,8 +37,8 @@ const App = () => {
     { label: 'Secure Channel Encryption', value: 'mediaEncryption' },
     { label: 'Geofencing', value: 'geofencing' },
     { label: 'Screen share, mute, and volume control', value: 'productWorkflow' },
-    { label: 'Virtual Background', value: 'virtualBackground' }
-
+    { label: 'Virtual Background', value: 'virtualBackground' },
+    { label: 'AI Noise Suppression', value: 'noiseSuppression' }
   ]);
 
   return (
@@ -116,6 +117,11 @@ const App = () => {
         {
           selectedFeature === 'virtualBackground'  && (
             <VirtualBackground/>
+          )
+        }
+        {
+          selectedFeature === 'noiseSuppression'  && (
+            <AINoiseSuppression/>
           )
         }
       </View>
