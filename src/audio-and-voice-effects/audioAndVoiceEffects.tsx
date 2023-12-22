@@ -57,6 +57,7 @@ const AudioAndVoiceEffects = () => {
               alignSelf: 'center',
               borderColor: 'white',
               borderWidth: 1,
+              height: 30
             }}
           />
           <View>
@@ -65,7 +66,7 @@ const AudioAndVoiceEffects = () => {
             <Button title={effectCaptions[audioAndVoiceEffectsManager.voiceEffectIndex]} onPress={audioAndVoiceEffectsManager.applyVoiceEffect} />
           </View>
           <View>
-            <Text>Enable speakerphone</Text>
+            <Text style = {{color: "white"}}>Enable speakerphone</Text>
             <Switch
               onValueChange={(newValue) => audioAndVoiceEffectsManager.changeAudioRoute(newValue)}
             />

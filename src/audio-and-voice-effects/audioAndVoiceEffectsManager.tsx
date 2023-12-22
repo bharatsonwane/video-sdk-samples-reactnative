@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AgoraManager from "../agora-manager/agoraManager";
 import config from "../agora-manager/config";
 import {
@@ -53,6 +53,13 @@ const AudioAndVoiceEffectsManager = () => {
     const res = agoraEngineRef.current?.stopAudioMixing();
     console.log(res);
   };
+
+  useEffect(() => {
+    return () => {
+        // Release the engine when component unmount.
+        agoraManager.destroyEngine();
+    };
+}, []);
 
   // Function to stop the currently playing sound effect
   const stopSoundEffect = () => {

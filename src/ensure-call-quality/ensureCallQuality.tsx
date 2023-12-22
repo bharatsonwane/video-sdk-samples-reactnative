@@ -56,10 +56,11 @@ const EnsureCallQuality = () => {
               alignSelf: 'center',
               borderColor: 'white', // Set the border color to black
               borderWidth: 1, // Add a border width to make it visible
+              height: 30
             }}
           />
           {/* Display network quality */}
-          <Text> Network Quality: {callQualityManager.networkQuality}</Text>
+          <Text style = {{color : "white"}}> Network Quality: {callQualityManager.networkQuality}</Text>
           {/* Button to start/stop echo test */}
           <View style={{ padding: 2 }}>
             <Button title={callQualityManager.isEchoTestRunning ? "Stop Test" : "Start Echo Test"} onPress={startAndStopEchoTest} />

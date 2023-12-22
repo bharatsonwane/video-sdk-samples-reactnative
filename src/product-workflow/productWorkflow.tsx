@@ -23,13 +23,15 @@ const ProductWorkflow = () => {
                             alignSelf: 'center',
                             borderColor: 'black',
                             borderWidth: 1,
+                            height: 30
                         }}
+                        placeholderTextColor={"white"}
                     />
                     <View>
                         <View style={{ flexDirection: 'row', justifyContent: 'center', padding: 10 }}>
                             <Button title="+" onPress={productWorkflowManager.increaseVolume} />
 
-                            <Text> Volume: {productWorkflowManager.volume} </Text>
+                            <Text style = {{color: "white"}}> Volume: {productWorkflowManager.volume} </Text>
                             <Button title="-" onPress={productWorkflowManager.decreaseVolume} />
                         </View>
                         <Button
@@ -38,7 +40,7 @@ const ProductWorkflow = () => {
                         />
                     </View>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Text style={{ marginRight: 10 }}>Mute Remote User:</Text>
+                        <Text style={{ marginRight: 10, color: "white" }}>Mute Remote User:</Text>
                         <Switch
                             onValueChange={(newValue) => productWorkflowManager.mute(newValue)}
                         />

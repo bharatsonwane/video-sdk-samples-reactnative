@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Alert } from "react-native";
 import AgoraManager from "../agora-manager/agoraManager";
 import config from "../agora-manager/config";
@@ -16,6 +16,13 @@ const PlayMediaManager = () => {
   const [isUrlOpened, setIsUrlOpened] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [mediaPlayerState, setMediaPlayerState] = useState<MediaPlayerState|null> (MediaPlayerState.PlayerStateIdle);
+
+  useEffect(() => {
+    return () => {
+        // Release the engine when component unmount.
+        agoraManager.destroyEngine();
+    };
+  }, []);
 
   const joinChannel = async () => {
     try {

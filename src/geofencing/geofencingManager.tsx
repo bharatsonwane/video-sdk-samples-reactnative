@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AgoraManager from "../agora-manager/agoraManager";
 import { AreaCode } from "react-native-agora";
 
@@ -6,6 +6,14 @@ const GeofencingManager = () => {
     const agoraManager = AgoraManager();
     const { agoraEngineRef, joined, remoteUIDs, setAgoraRegion } = agoraManager;
     const [channelName, setChannelName] = useState("");
+
+
+    useEffect(() => {
+      return () => {
+          // Release the engine when component unmount.
+          agoraManager.destroyEngine();
+      };
+    }, []);
   
     const joinChannel = async () => {
       try {

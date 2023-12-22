@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AgoraManager from "../agora-manager/agoraManager";
 import {
   EncryptionMode,
@@ -12,6 +12,13 @@ const MediaEncryptionManager = () => {
   const { agoraEngineRef, joined, remoteUIDs } = agoraManager;
   const [channelName, setChannelName] = useState("");
 
+  useEffect(() => {
+    return () => {
+        // Release the engine when component unmount.
+        agoraManager.destroyEngine();
+    };
+  }, []);
+  
   const joinChannel = async () => {
     try {
       await setupAgoraEngine();

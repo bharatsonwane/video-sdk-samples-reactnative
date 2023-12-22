@@ -11,6 +11,7 @@ import CloudProxy from './src/cloud-proxy/cloudProxy';
 import Geofencing from './src/geofencing/geofencing';
 import MediaEncryption from './src/encrypt-media-stream/mediaEncryption';
 import ProductWorkflow from './src/product-workflow/productWorkflow';
+import VirtualBackground from './src/virtual-background/virtualBackground';
 
 const App = () => {
   const [selectedProduct, setSelectedProduct] = useState('Video Calling');
@@ -33,22 +34,24 @@ const App = () => {
     { label: 'Stream Media to a Channel', value: 'playMedia' },
     { label: 'Cloud Proxy', value: 'cloudProxy' },
     { label: 'Secure Channel Encryption', value: 'mediaEncryption' },
-    { label: 'Geofencing', value: 'geofencing' }
+    { label: 'Geofencing', value: 'geofencing' },
+    { label: 'Screen share, mute, and volume control', value: 'productWorkflow' },
+    { label: 'Virtual Background', value: 'virtualBackground' }
 
   ]);
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#1e3a5a' }}>
-      <View style={{ flex: 1, padding: 5 }}>
-        <View style={{ backgroundColor: '#3498db', padding: 10, marginBottom: 16, borderRadius: 10 }}>
+      <View style={{ backgroundColor: '#3498db', padding: 10, marginBottom: 16, borderRadius: 10 }}>
           <Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold',  textAlign : 'center', height: 50}}>Get Started with Agora Video Calling</Text>
-        </View>
+      </View>
+      <View style={{ flex: 1, padding: 5 }}>
         <DropDownPicker
           open={openProduct}
           value={selectedProduct}
           items={productItems}
           setOpen={setOpenProduct}
-          setValue={(value) => {
+          setValue={(value: any) => {
             setSelectedProduct(value); // Update the local state
           }}
           onChangeValue={(product) => {
@@ -103,6 +106,16 @@ const App = () => {
         {
           selectedFeature === 'mediaEncryption'  && (
             <MediaEncryption/>
+          )
+        }
+        {
+          selectedFeature === 'productWorkflow'  && (
+            <ProductWorkflow/>
+          )
+        }
+        {
+          selectedFeature === 'virtualBackground'  && (
+            <VirtualBackground/>
           )
         }
       </View>
