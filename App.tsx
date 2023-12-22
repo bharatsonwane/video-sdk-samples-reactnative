@@ -14,6 +14,7 @@ import ProductWorkflow from './src/product-workflow/productWorkflow';
 import VirtualBackground from './src/virtual-background/virtualBackground';
 import AINoiseSuppression from './src/ai-noise-suppression/aiNoiseSuppression';
 import SpatialAudio from './src/spatial-audio/spatialAudio';
+import RawAudioAndVideo from './src/stream-raw-audio-and-video/rawAudioAndVideo';
 
 const App = () => {
   const [selectedProduct, setSelectedProduct] = useState('Video Calling');
@@ -39,8 +40,10 @@ const App = () => {
     { label: 'Geofencing', value: 'geofencing' },
     { label: 'Screen share, mute, and volume control', value: 'productWorkflow' },
     { label: 'Virtual Background', value: 'virtualBackground' },
-    { label: 'AI Noise Suppression', value: 'noiseSuppression' }
-    { label: '3d Spatial Audio', value: 'spatialAudio' }
+    { label: 'AI Noise Suppression', value: 'noiseSuppression' },
+    { label: '3d Spatial Audio', value: 'spatialAudio' },
+    { label: 'Raw Audio and Video', value: 'rawAudioVideo' }
+
   ]);
 
   return (
@@ -129,6 +132,11 @@ const App = () => {
         {
           selectedFeature === 'spatialAudio'  && (
             <SpatialAudio/>
+          )
+        }
+        {
+          selectedFeature === 'rawAudioVideo'  && (
+            <RawAudioAndVideo/>
           )
         }
       </View>
