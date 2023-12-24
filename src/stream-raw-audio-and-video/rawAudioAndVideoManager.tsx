@@ -4,9 +4,10 @@ import {
   RawAudioFrameOpModeType,
   AudioFrame,
   VideoFrame,
-  VideoPixelFormat,
   VideoSourceType,
+  IVideoFrameObserver,
 } from "react-native-agora";
+import * as RawData from "react-native-agora-rawdata"
 
 // Constants for audio frame configuration
 const SAMPLE_RATE = 16000;
@@ -16,100 +17,56 @@ const SAMPLES_PER_CALL = 1024;
 // Audio frame observer configuration
 const iAudioFrameObserver = {
   onPlaybackAudioFrameBeforeMixing: (channelId: string, uID: number, audioFrame: AudioFrame) => {
-    console.log(channelId, uID, audioFrame);
-    return true;
-  },
-};
-
-// Video frame observer configuration
-const iVideoFrameObserver = {
-  onCaptureVideoFrame: (sourceType: VideoSourceType, videoFrame: VideoFrame) => {
-    console.log(videoFrame);
-
-    // Example: Cropping the video frame by removing the top 100 pixels
-    const croppedVideoFrame = cropVideoFrame(videoFrame, 0, 100);
-
-    // Continue processing or rendering with the croppedVideoFrame
-
-    return true;
-  },
-  onPreEncodeVideoFrame: (sourceType:VideoSourceType, videoFrame: VideoFrame) => {
-    console.log(videoFrame);
-    return false;
-  },
-  onScreenCaptureVideoFrame: (videoFrame: VideoFrame) => {
-    console.log(videoFrame);
-    return false;
-  },
-  onPreEncodeScreenVideoFrame: (videoFrame: VideoFrame) => {
-    console.log(videoFrame);
-    return false;
-  },
-  onMediaPlayerVideoFrame: (videoFrame: VideoFrame, id: number) => {
-    console.log(id, videoFrame);
-    return false;
-  },
-  onRenderVideoFrame: (channelID: string, remoteUid: number, videoFrame: VideoFrame) => {
-    console.log(channelID, remoteUid, videoFrame);
     return false;
   },
 };
 
-const cropVideoFrame = (videoFrame: VideoFrame, cropTop: number, cropBottom: number) => {
-    const { width, height, rotation, yBuffer, uBuffer, vBuffer } = videoFrame;
-  
-    if (width === undefined || height === undefined || yBuffer === undefined || uBuffer === undefined || vBuffer === undefined) {
-      // Handle the case where essential properties are undefined
-      console.error("Invalid video frame properties");
-      return null; // or provide a default value
-    }
-  
-    const croppedHeight = height - cropTop - cropBottom;
-    const croppedYBuffer = new Uint8Array(croppedHeight * width);
-    const croppedUBuffer = new Uint8Array(croppedHeight / 2 * width / 2);
-    const croppedVBuffer = new Uint8Array(croppedHeight / 2 * width / 2);
-  
-    // Copy the cropped portion of the Y buffer
-    for (let y = cropTop; y < height - cropBottom; y++) {
-      const srcOffset = y * width;
-      const destOffset = (y - cropTop) * width;
-      croppedYBuffer.set(yBuffer.subarray(srcOffset, srcOffset + width), destOffset);
-    }
-  
-    // Copy the cropped portion of the U buffer
-    for (let y = cropTop / 2; y < (height - cropBottom) / 2; y++) {
-      const srcOffset = y * width / 2;
-      const destOffset = (y - cropTop / 2) * width / 2;
-      croppedUBuffer.set(uBuffer.subarray(srcOffset, srcOffset + width / 2), destOffset);
-    }
-  
-    // Copy the cropped portion of the V buffer
-    for (let y = cropTop / 2; y < (height - cropBottom) / 2; y++) {
-      const srcOffset = y * width / 2;
-      const destOffset = (y - cropTop / 2) * width / 2;
-      croppedVBuffer.set(vBuffer.subarray(srcOffset, srcOffset + width / 2), destOffset);
-    }
-  
-    return {
-      width,
-      height: croppedHeight,
-      rotation,
-      yBuffer: croppedYBuffer,
-      uBuffer: croppedUBuffer,
-      vBuffer: croppedVBuffer,
-    };
+class VideoFrameObserver implements IVideoFrameObserver
+{
+  onCaptureVideoFrame(
+    sourceType: VideoSourceType,
+    videoFrame: VideoFrame
+  ): boolean {
+      return true;
   };
+
+  onPreEncodeVideoFrame(
+    sourceType: VideoSourceType,
+    videoFrame: VideoFrame
+  ): boolean{
+    return true;
+  };
+
+  onMediaPlayerVideoFrame (
+    videoFrame: VideoFrame,
+    mediaPlayerId: number
+  ) : boolean
+  {
+    return true;
+  };
+
+  onRenderVideoFrame (
+    channelId: string,
+    remoteUid: number,
+    videoFrame: VideoFrame
+  ) :boolean {
+    return true;
+  };
+
+  onTranscodedVideoFrame (videoFrame: VideoFrame) : boolean{
+    return true;
+  };
+}
   
 const RawAudioAndVideoManager = () => {
   // Initialize Agora manager
   const agoraManager = AgoraManager();
   const { agoraEngineRef, joined, remoteUIDs } = agoraManager;
   const [channelName, setChannelName] = useState("");
-
   // Cleanup function for unmounting
   useEffect(() => {
     return () => {
-      agoraEngineRef.current?.getMediaEngine().unregisterVideoFrameObserver(iVideoFrameObserver);
+      //agoraEngineRef.current?.getMediaEngine().unregisterVideoFrameObserver();
       agoraEngineRef.current?.getMediaEngine().unregisterAudioFrameObserver(iAudioFrameObserver);
       // Release the engine when the component unmounts
       agoraManager.destroyEngine();
@@ -121,6 +78,7 @@ const RawAudioAndVideoManager = () => {
     try {
       // Setup Agora engine, fetch RTC token, and join channel
       await agoraManager.setupAgoraEngine();
+      configureRawAudioAndVideo();
       await agoraManager.fetchRTCToken(channelName);
       await agoraManager.joinChannel();
     } catch (error) {
@@ -131,8 +89,10 @@ const RawAudioAndVideoManager = () => {
   // Function to configure raw audio and video
   const configureRawAudioAndVideo = async () => {
     // Register audio and video frame observers
+    agoraEngineRef.current?.getMediaEngine()?.registerVideoFrameObserver(new VideoFrameObserver);
     agoraEngineRef.current?.getMediaEngine()?.registerAudioFrameObserver(iAudioFrameObserver);
-    agoraEngineRef.current?.getMediaEngine()?.registerVideoFrameObserver(iVideoFrameObserver);
+    RawData.default.registerVideoFrameObserver(agoraEngineRef.current?.getNativeHandle()!);
+    RawData.default.registerVideoFrameObserver(agoraEngineRef.current?.getNativeHandle()!)
 
     // Set audio frame parameters for recording, playback, and mixed audio
     agoraEngineRef.current?.setRecordingAudioFrameParameters(
@@ -175,7 +135,6 @@ const RawAudioAndVideoManager = () => {
     remoteUIDs,
     setUserRole: agoraManager.setUserRole,
     setChannelName,
-    configureRawAudioAndVideo,
   };
 };
 

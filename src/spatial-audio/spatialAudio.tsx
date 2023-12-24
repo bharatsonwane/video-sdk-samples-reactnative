@@ -15,7 +15,7 @@ const SpatialAudio = () => {
     updateRemoteSpatialAudioPosition
   } = SpatialAudioManager();
 
-  const [distanceUnit, setDistanceUnit] = useState(50); // Initial value for the audio range
+  const [distanceUnit, setDistanceUnit] = useState(10); // Initial value for the audio range
 
   return (
     <>
