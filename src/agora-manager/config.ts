@@ -31,7 +31,7 @@ const config: configType = {
     encryptionMode: EncryptionMode;
     salt: string;
     cipherKey: string;
-    product: string;
+    product: string | null;
     audioFilePath: string;
     soundEffectId: number;
     soundEffectFilePath: string,

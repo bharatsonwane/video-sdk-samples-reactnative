@@ -23,7 +23,7 @@ const ProductWorkflow = () => {
                             alignSelf: 'center',
                             borderColor: 'black',
                             borderWidth: 1,
-                            height: 30
+                            height: 40
                         }}
                         placeholderTextColor={"white"}
                     />

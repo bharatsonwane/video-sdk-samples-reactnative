@@ -56,7 +56,7 @@ const EnsureCallQuality = () => {
               alignSelf: 'center',
               borderColor: 'white', // Set the border color to black
               borderWidth: 1, // Add a border width to make it visible
-              height: 30
+              height: 40
             }}
           />
           {/* Display network quality */}
