@@ -27,10 +27,10 @@ const PlayMedia = () => {
         setMediaBtnTxt("Resume Player");
     }
     else if(mediaPlayerState === MediaPlayerState.PlayerStateOpening) {
-        setMediaBtnTxt("Opening Media File");
+        setMediaBtnTxt("Opening Media File...");
     }
     else {
-        setMediaBtnTxt("Play Media");
+        setMediaBtnTxt("Open Media File");
     }
   }, [mediaPlayerState]);
 

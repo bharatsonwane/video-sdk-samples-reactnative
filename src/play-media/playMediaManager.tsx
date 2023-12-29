@@ -20,6 +20,7 @@ const PlayMediaManager = () => {
   useEffect(() => {
     return () => {
         // Release the engine when component unmount.
+        agoraEngineRef.current?.destroyMediaPlayer(mediaPlayerRef?.current);
         agoraManager.destroyEngine();
     };
   }, []);
@@ -75,16 +76,16 @@ const PlayMediaManager = () => {
     mediaPlayerRef.current = agoraEngineRef.current?.createMediaPlayer();
 
     mediaPlayerRef.current?.registerPlayerSourceObserver({
-      onPlayerSourceStateChanged: state => {
-        handlePlayerSourceStateChanged(state);
-      },
-      onPositionChanged: position => {
-        // Use position and duration to update your play progressBar here.
-      },
+      onPlayerSourceStateChanged,
+      onPositionChanged
     });
   };
 
-  const handlePlayerSourceStateChanged = (state: MediaPlayerState) => {
+  const onPositionChanged = (position: number) => {
+    // Use position and duration to update your play progressBar here.
+  }
+  
+  const onPlayerSourceStateChanged = (state: MediaPlayerState) => {
     setMediaPlayerState(state);
     if (state === MediaPlayerState.PlayerStateOpenCompleted) {
       setIsUrlOpened(true);

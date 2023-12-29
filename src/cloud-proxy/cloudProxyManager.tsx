@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import AgoraManager from "../agora-manager/agoraManager";
-import { CloudProxyType, ProxyType } from "react-native-agora";
+import { CloudProxyType, ConnectionChangedReasonType, ConnectionStateType, ProxyType, RtcConnection } from "react-native-agora";
 
 const CloudProxyManager = () => {
   const agoraManager = AgoraManager();
@@ -18,22 +18,24 @@ const CloudProxyManager = () => {
   const enableCloudProxy = async () => {
     agoraEngineRef.current?.setCloudProxy(CloudProxyType.UdpProxy);
     agoraEngineRef.current?.registerEventHandler({
-      onConnectionStateChanged(connection, state, reason) {
-        if (reason === 0) {
-        console.log('The SDK is connecting to the Agora edge server');
-        }
-      },
-      onProxyConnected(
-        channel: string,
-        uid: number,
-        proxyType: ProxyType,
-        localProxyIp: string,
-        elapsed: number)
-      {
-        console.log("Proxy server connected.");
-      }
+      onConnectionStateChanged,
+      onProxyConnected
     });
   };
+
+  const onConnectionStateChanged = (connection: RtcConnection, state: ConnectionStateType, reason: ConnectionChangedReasonType) => {
+    if (reason === 0) {
+    console.log('The SDK is connecting to the Agora edge server');
+    }
+  },
+  const onProxyConnected = (
+    channel: string,
+    uid: number,
+    proxyType: ProxyType,
+    localProxyIp: string,
+    elapsed: number) => {
+    console.log("Proxy server connected.");
+  }
   const joinChannel = async () => {
     try {
       await agoraManager.setupAgoraEngine();

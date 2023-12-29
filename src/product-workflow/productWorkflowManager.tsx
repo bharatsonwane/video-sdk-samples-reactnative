@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect } from "react";
 import AgoraManager from "../agora-manager/agoraManager";
-import config from "../agora-manager/config";
 import {
     VideoContentHint,
     IRtcEngineEx,
@@ -29,25 +28,28 @@ const ProductWorkflowManager = () => {
         };
     }, []);
 
+    const SetupAgoraEngine = async ()  => {
+
+        await agoraManager.setupAgoraEngine();
+        agoraEngineRefEx.current = createAgoraRtcEngine() as IRtcEngineEx;
+
+        if (Platform.OS === 'android') {
+            agoraEngineRefEx.current.loadExtensionProvider('agora_screen_capture_extension');
+        }
+
+        agoraEngineRefEx.current?.registerEventHandler({
+            onLocalVideoStateChanged(
+                source: VideoSourceType,
+                state: LocalVideoStreamState,
+                _error: LocalVideoStreamError,
+            ) {
+                handleLocalVideoStateChange(source, state);
+            },
+        });
+    }
     const joinChannel = async () => {
         try {
-            await agoraManager.setupAgoraEngine();
-            agoraEngineRefEx.current = createAgoraRtcEngine() as IRtcEngineEx;
-
-            if (Platform.OS === 'android') {
-                agoraEngineRefEx.current.loadExtensionProvider('agora_screen_capture_extension');
-            }
-
-            agoraEngineRefEx.current?.registerEventHandler({
-                onLocalVideoStateChanged(
-                    source: VideoSourceType,
-                    state: LocalVideoStreamState,
-                    _error: LocalVideoStreamError,
-                ) {
-                    handleLocalVideoStateChange(source, state);
-                },
-            });
-
+            await SetupAgoraEngine();
             await agoraManager.fetchRTCToken(channelName);
             await agoraManager.joinChannel();
         } catch (error) {

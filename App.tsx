@@ -30,9 +30,9 @@ const App = () => {
 
   const [sampleCodeItems, setSampleCodeItems] = useState<Array<ItemType<string>>>([
     { label: 'Select a sample code:', value: '' },
-    { label: 'Get Started', value: 'getStarted' },
-    { label: 'Authentication Workflow', value: 'authenticationWorkflow' },
-    { label: 'Ensure Call Quality', value: 'callQuality' },
+    { label: 'SDK Quickstart', value: 'getStarted' },
+    { label: ' Secure authentication with tokens', value: 'authenticationWorkflow' },
+    { label: 'Call quality best practice', value: 'callQuality' },
     { label: 'Audio and Voice Effects', value: 'audioEffects' },
     { label: 'Stream Media to a Channel', value: 'playMedia' },
     { label: 'Cloud Proxy', value: 'cloudProxy' },

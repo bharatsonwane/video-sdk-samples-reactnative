@@ -16,7 +16,6 @@ const config: configType = {
     soundEffectFilePath: getResourcePath('effect.mp3'),
     logFilePath: "",
     mediaLocation: "https://www.appsloveworld.com/wp-content/uploads/2018/10/640.mp4",
-    encryptionBase64: "",
     encryptionKey: "",
     imagePath: getResourcePath('agora.png')
   };
@@ -37,7 +36,6 @@ const config: configType = {
     soundEffectFilePath: string,
     logFilePath: string,
     mediaLocation: string,
-    encryptionBase64: string,
     encryptionKey: string,
     imagePath: string
   };
