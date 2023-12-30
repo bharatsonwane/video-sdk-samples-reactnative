@@ -1,12 +1,12 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import AgoraManager from "../agora-manager/agoraManager";
 import {
     VideoContentHint,
-    IRtcEngineEx,
     VideoSourceType,
     LocalVideoStreamState,
     LocalVideoStreamError,
-    createAgoraRtcEngine
+    showRPSystemBroadcastPickerView,
+    ChannelMediaOptions
 } from "react-native-agora";
 import { Alert, Platform } from "react-native";
 
@@ -14,7 +14,6 @@ const ProductWorkflowManager = () => {
     const agoraManager = AgoraManager();
     const { agoraEngineRef, joined, remoteUIDs } = agoraManager;
 
-    const agoraEngineRefEx = useRef<IRtcEngineEx>();
     const [volume, setVolume] = useState(50);
     const [isSharingScreen, setScreenCapture] = useState(false);
 
@@ -31,13 +30,12 @@ const ProductWorkflowManager = () => {
     const SetupAgoraEngine = async ()  => {
 
         await agoraManager.setupAgoraEngine();
-        agoraEngineRefEx.current = createAgoraRtcEngine() as IRtcEngineEx;
 
         if (Platform.OS === 'android') {
-            agoraEngineRefEx.current.loadExtensionProvider('agora_screen_capture_extension');
+            agoraEngineRef.current?.loadExtensionProvider('agora_screen_capture_extension');
         }
 
-        agoraEngineRefEx.current?.registerEventHandler({
+        agoraEngineRef.current?.registerEventHandler({
             onLocalVideoStateChanged(
                 source: VideoSourceType,
                 state: LocalVideoStreamState,
@@ -57,6 +55,16 @@ const ProductWorkflowManager = () => {
         }
     };
 
+    const updateChannelPublishOptions = (publishScreenTrack: boolean) => {
+        const channelOptions = new ChannelMediaOptions();
+        channelOptions.publishScreenCaptureAudio = publishScreenTrack;
+        channelOptions.publishScreenCaptureVideo = publishScreenTrack;
+        channelOptions.publishScreenTrack = publishScreenTrack;
+        channelOptions.publishMicrophoneTrack = !publishScreenTrack;
+        channelOptions.publishCameraTrack = !publishScreenTrack;
+        agoraEngineRef.current?.updateChannelMediaOptions(channelOptions);
+      };
+    
     const handleLocalVideoStateChange = (source: VideoSourceType, state: LocalVideoStreamState) => {
         if (source === VideoSourceType.VideoSourceScreen) {
             switch (state) {
@@ -99,34 +107,46 @@ const ProductWorkflowManager = () => {
         }
     };
 
-    const startScreenCapture = () => {
-
+    const startScreenCapture = async () => {
         if(agoraManager.joined === false)
         {
             Alert.alert("Join the channel to start screen sharing");
             return;
         }
-        agoraEngineRef.current?.startScreenCapture({
-            captureVideo: true,
-            captureAudio: true,
-            videoParams: {
-                dimensions: { width: 1280, height: 720 },
-                frameRate: 15,
-                bitrate: 0,
-                contentHint: VideoContentHint.ContentHintMotion,
-            },
-            audioParams: {
-                sampleRate: 16000,
-                channels: 2,
-                captureSignalVolume: 100,
-            },
-        });
-        agoraEngineRef.current?.startPreview(VideoSourceType.VideoSourceScreen);
-        setScreenCapture(true);
+        const screenCaptureCapability = agoraEngineRef.current?.queryScreenCaptureCapability();
+        if (typeof screenCaptureCapability !== 'undefined' && screenCaptureCapability >= 0) {
+
+            agoraEngineRef.current?.startScreenCapture({
+                captureVideo: true,
+                audioParams: {
+                    sampleRate: 16000,
+                    channels: 2,
+                    captureSignalVolume: 100,
+                },
+                captureAudio: true,
+                videoParams: {
+                    dimensions: { width: 1280, height: 720 },
+                    frameRate: 15,
+                    bitrate: 0,
+                    contentHint: VideoContentHint.ContentHintMotion,
+                },
+            });
+            agoraEngineRef.current?.startPreview(VideoSourceType.VideoSourceScreen);
+            if (Platform.OS === 'ios') {
+                // Show the picker view for screen share, ⚠️ only support for iOS 12+
+                await showRPSystemBroadcastPickerView(true);
+            }
+            setScreenCapture(true);
+            updateChannelPublishOptions(true);
+        }
+        else {
+            Alert.alert("Screen sharing is not supported on your device");
+        }
     };
 
     const stopScreenSharing = () => {
         agoraEngineRef.current?.stopScreenCapture();
+        updateChannelPublishOptions(false);
         setScreenCapture(false);
     };
 

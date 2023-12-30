@@ -24,6 +24,7 @@ import {
   RemoteVideoStats
 } from 'react-native-agora';
 import config from "../agora-manager/config";
+import { Alert } from "react-native";
 
 const CallQualityManager = () => {
   const agoraManager = AgoraManager();
@@ -225,6 +226,11 @@ const CallQualityManager = () => {
 
   // Function to start or stop the echo test
   const startEchoTest = async () => {
+    if(config.token==="")
+    {
+      Alert.alert("Please specify a token in the config file to run echo test");
+      return;
+    }
     await setupAgoraEngine();
     const ret = await agoraManager.agoraEngineRef.current?.startEchoTest({
       enableAudio: true,

@@ -75,7 +75,6 @@ const CustomAudioVideoManager = () => {
     });
   };
 
-
   const setupAgoraEngine = async () => {
     agoraEngineRef.current = createAgoraRtcEngine() as IRtcEngineEx;
 

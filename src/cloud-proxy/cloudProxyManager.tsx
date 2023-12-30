@@ -27,7 +27,8 @@ const CloudProxyManager = () => {
     if (reason === 0) {
     console.log('The SDK is connecting to the Agora edge server');
     }
-  },
+  }
+  
   const onProxyConnected = (
     channel: string,
     uid: number,

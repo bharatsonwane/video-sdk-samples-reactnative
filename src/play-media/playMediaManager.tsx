@@ -11,7 +11,7 @@ import {
 const PlayMediaManager = () => {
   const agoraManager = AgoraManager();
   const { agoraEngineRef, joined, remoteUIDs } = agoraManager;
-  const mediaPlayerRef = useRef<IMediaPlayer | null>();
+  const mediaPlayerRef = useRef<IMediaPlayer>();
   const [channelName, setChannelName] = useState("");
   const [isUrlOpened, setIsUrlOpened] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -39,7 +39,7 @@ const PlayMediaManager = () => {
     try {
       agoraManager.leaveChannel();
       agoraManager.destroyEngine();
-      agoraEngineRef.current?.destroyMediaPlayer(mediaPlayerRef);
+      agoraEngineRef.current?.destroyMediaPlayer(mediaPlayerRef.current);
       setMediaPlayerState(MediaPlayerState.PlayerStateIdle);
       setIsPlaying(false);
       setIsUrlOpened(false);

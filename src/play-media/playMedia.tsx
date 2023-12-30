@@ -29,6 +29,10 @@ const PlayMedia = () => {
     else if(mediaPlayerState === MediaPlayerState.PlayerStateOpening) {
         setMediaBtnTxt("Opening Media File...");
     }
+    else if(mediaPlayerState === MediaPlayerState.PlayerStateOpenCompleted)
+    {
+      setMediaBtnTxt("Play Media FSile");
+    }
     else {
         setMediaBtnTxt("Open Media File");
     }

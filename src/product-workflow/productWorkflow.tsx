@@ -8,6 +8,7 @@ const ProductWorkflow = () => {
     const productWorkflowManager = ProductWorkflowManager();
 
     return (
+        <>
         <AgoraUI
             joined={productWorkflowManager.joined}
             handleJoinCall={productWorkflowManager.Join}
@@ -45,7 +46,11 @@ const ProductWorkflow = () => {
                             onValueChange={(newValue) => productWorkflowManager.mute(newValue)}
                         />
                     </View>
-                    {productWorkflowManager.isSharingScreen && (
+                </View>
+            }
+        />
+        <View>
+            {productWorkflowManager.isSharingScreen && (
                         <RtcSurfaceView
                             style={{ width: '100%', height: 200 }}
                             canvas={{
@@ -55,9 +60,8 @@ const ProductWorkflow = () => {
                             }}
                         />
                     )}
-                </View>
-            }
-        />
+        </View>
+        </>
     );
 };
 

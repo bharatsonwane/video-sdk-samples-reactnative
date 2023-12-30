@@ -2,8 +2,11 @@
 import AgoraManager from "../agora-manager/agoraManager";
 import { useState, useEffect } from "react";
 import { Alert } from "react-native";
-import { BackgroundSourceType, BackgroundBlurDegree, MediaSourceType } from "react-native-agora";
+import { BackgroundSourceType, BackgroundBlurDegree } from "react-native-agora";
 import config from "../agora-manager/config";
+import { getAbsolutePath } from "../../utils";
+import RNFS from 'react-native-fs';
+
 
 const VirtualBackgroundManager = () => {
     const agoraManager = AgoraManager();
@@ -100,11 +103,18 @@ const VirtualBackgroundManager = () => {
       console.log('Background Color turned on');
     };
   
-    const setImageBackground = () => {
+    const setImageBackground = async () => {
       setVirtualBackgroundStatus(true);
+      const imagesPath = RNFS.DocumentDirectoryPath + '/images/';
+      const fileExists = await RNFS.exists(imagesPath + 'agora.png');
+
+      if (fileExists) {
+      } else {
+        console.error('Image file not found.');
+      }
       agoraEngineRef.current?.enableVirtualBackground(isVirtualBackgroundOn, {
         background_source_type: BackgroundSourceType.BackgroundImg,
-        source: config.imagePath,
+        source: await getAbsolutePath(config.imagePath),
       },
       {});
       console.log('Background Image turned on');
