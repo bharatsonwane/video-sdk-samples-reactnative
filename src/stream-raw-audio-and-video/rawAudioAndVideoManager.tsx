@@ -7,7 +7,6 @@ import {
   VideoSourceType,
   IVideoFrameObserver,
 } from "react-native-agora";
-import * as RawData from "react-native-agora-rawdata"
 
 // Constants for audio frame configuration
 const SAMPLE_RATE = 16000;
@@ -78,7 +77,7 @@ const RawAudioAndVideoManager = () => {
     try {
       // Setup Agora engine, fetch RTC token, and join channel
       await agoraManager.setupAgoraEngine();
-      configureRawAudioAndVideo();
+      await configureRawAudioAndVideo();
       await agoraManager.fetchRTCToken(channelName);
       await agoraManager.joinChannel();
     } catch (error) {
@@ -91,8 +90,6 @@ const RawAudioAndVideoManager = () => {
     // Register audio and video frame observers
     agoraEngineRef.current?.getMediaEngine()?.registerVideoFrameObserver(new VideoFrameObserver);
     agoraEngineRef.current?.getMediaEngine()?.registerAudioFrameObserver(iAudioFrameObserver);
-    RawData.default.registerVideoFrameObserver(agoraEngineRef.current?.getNativeHandle()!);
-    RawData.default.registerVideoFrameObserver(agoraEngineRef.current?.getNativeHandle()!)
 
     // Set audio frame parameters for recording, playback, and mixed audio
     agoraEngineRef.current?.setRecordingAudioFrameParameters(
