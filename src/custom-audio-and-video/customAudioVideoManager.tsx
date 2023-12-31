@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import AgoraManager from "../agora-manager/agoraManager";
-import ImagePicker, { ImagePickerResponse, ImageLibraryOptions } from 'react-native-image-picker'; // Import the library
+import * as ImagePicker from 'react-native-image-picker'; // Import the library
+import { ImagePickerResponse, ImageLibraryOptions } from 'react-native-image-picker'; // Import the library
 import {
   ExternalVideoSourceType,
   VideoBufferType,
