@@ -1,6 +1,6 @@
 import React from "react";
 import AgoraUI from "../agora-manager/agoraUI";
-import { View, TextInput } from "react-native";
+import { View, TextInput, Button } from "react-native";
 import RawAudioAndVideoManager from "./rawAudioAndVideoManager";
 
 const RawAudioAndVideo = () => {
@@ -22,10 +22,16 @@ const RawAudioAndVideo = () => {
               alignSelf: 'center',
               borderColor: 'white',
               borderWidth: 1,
-              height: 30
+              height: 40
             }}
             placeholderTextColor={"white"}
           />
+          <View>
+            <Button
+              title={rawAudioAndVideoManager.isCropping ? "Zoom Out": "Zoom In"}
+              onPress={rawAudioAndVideoManager.toggleCropping}
+            />
+          </View>
         </View>
       }
     />
