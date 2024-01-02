@@ -12,6 +12,7 @@
   "dependencies": {
     "@react-native-community/slider": "^4.5.0",
     "@react-native-picker/picker": "^2.6.1",
+    "buffer": "^6.0.3",
     "react": "18.2.0",
     "react-native": "0.72.4",
     "react-native-agora": "^4.2.1",

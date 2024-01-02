@@ -13,6 +13,9 @@ import {
 } from "react-native-agora";
 import config from "../agora-manager/config";
 import { Alert } from "react-native";
+import RNFS from 'react-native-fs';
+import { Buffer } from 'buffer';
+
 
 const CustomAudioVideoManager = () => {
   const agoraManager = AgoraManager();
@@ -51,13 +54,21 @@ const CustomAudioVideoManager = () => {
         console.log(`ImagePicker Error: ${response.errorCode}, ${response.errorMessage}`);
       } else {
         // Use the selected image for further processing
+        const imageURI = response.assets?.[0].uri;
         setImageUri(response.assets?.[0].uri);
-        if (selectedImageUri) {
-          // Convert the image to Uint8Array
-          fetch(selectedImageUri)
-            .then((response) => response.arrayBuffer())
-            .then((buffer) => {
+        if (imageURI) {
+          console.log("Image URI:", imageURI);
+          // Read the local file
+          RNFS.readFile(imageURI, 'base64')
+            .then((base64Content) => {
+              console.log("base64Content");
+              // Use the Buffer to decode the base64 content
+              const buffer = Buffer.from(base64Content, 'base64');
+        
+              // Convert the Buffer to Uint8Array
               const uint8Array = new Uint8Array(buffer);
+        
+              // Use the Uint8Array as needed
               agoraEngineRef.current?.getMediaEngine().pushVideoFrame({
                 type: VideoBufferType.VideoBufferRawData,
                 format: VideoPixelFormat.VideoPixelRgba,
@@ -65,9 +76,11 @@ const CustomAudioVideoManager = () => {
                 stride: response.assets?.[0].width || 0,
                 height: response.assets?.[0].height || 0,
               });
+        
+              console.log("Frame pushed");
             })
             .catch((error) => {
-              console.error('Error converting image to Uint8Array:', error);
+              console.error('Error reading image file:', error);
             });
         } else {
           console.error('Selected image URI is undefined');
