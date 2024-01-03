@@ -5,7 +5,6 @@ import { Alert } from "react-native";
 import { BackgroundSourceType, BackgroundBlurDegree } from "react-native-agora";
 import config from "../agora-manager/config";
 import { getAbsolutePath } from "../../utils";
-import RNFS from 'react-native-fs';
 
 
 const VirtualBackgroundManager = () => {
@@ -105,18 +104,12 @@ const VirtualBackgroundManager = () => {
   
     const setImageBackground = async () => {
       setVirtualBackgroundStatus(true);
-      const imagesPath = RNFS.DocumentDirectoryPath + '/images/';
-      const fileExists = await RNFS.exists(imagesPath + 'agora.png');
-
-      if (fileExists) {
-      } else {
-        console.error('Image file not found.');
-      }
       agoraEngineRef.current?.enableVirtualBackground(isVirtualBackgroundOn, {
         background_source_type: BackgroundSourceType.BackgroundImg,
         source: await getAbsolutePath(config.imagePath),
       },
       {});
+      console.log("Path: ", config.imagePath);
       console.log('Background Image turned on');
     };
   
