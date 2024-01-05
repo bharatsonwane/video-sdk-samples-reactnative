@@ -3,7 +3,7 @@ import { View, Text, Button, StyleSheet, ScrollView, Switch } from 'react-native
 import { RtcSurfaceView } from 'react-native-agora';
 import config from './config';
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   videoView: { width: '100%', height: 200, flex: 1 },
   switchContainer: {
     flexDirection: 'row',
@@ -14,6 +14,43 @@ const styles = StyleSheet.create({
   switchLabel: {
     marginHorizontal: 10,
   },
+  input: {
+    alignSelf: "center",
+    borderColor: "white",
+    borderWidth: 1,
+    height: 30,
+  },
+  mediaPlayerView: {width: '100%', height: 200 },
+  sliderStyle: { width: 200, marginTop: 20, alignSelf: 'center' },
+  volumeControl: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    padding: 10,
+},
+volumeText: {
+    color: "white",
+    marginHorizontal: 10,
+},
+muteSwitchContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+},
+muteLabel: {
+    marginRight: 10,
+    color: "white",
+},
+screenShareView: {
+    width: '100%',
+    height: 200,
+},
+networkQuality: {
+  color: "white",
+},
+buttonContainer: {
+  padding: 2,
+},
+
+
 });
 
 interface AgoraUIProps {
