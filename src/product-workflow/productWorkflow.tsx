@@ -40,18 +40,20 @@ const ProductWorkflow = () => {
                             onValueChange={(newValue) => productWorkflowManager.mute(newValue)}
                         />
                     </View>
-                    {productWorkflowManager.isSharingScreen && (
-                        <RtcSurfaceView
-                            style={styles.screenShareView}
-                            canvas={{
-                                uid: 0,
-                                sourceType: VideoSourceType.VideoSourceScreen,
-                                renderMode: RenderModeType.RenderModeFit,
-                            }}
-                            connection={{localUid: config.uid, channelId: config.channelName}}
-                        />
-                    )}
                 </View>
+            }
+            additionalViews = {
+                productWorkflowManager.isSharingScreen && (
+                    <RtcSurfaceView
+                        style={styles.screenShareView}
+                        canvas={{
+                            uid: config.uid,
+                            sourceType: VideoSourceType.VideoSourceScreen,
+                            renderMode: RenderModeType.RenderModeFit,
+                        }}
+                        connection={{localUid: config.uid, channelId: config.channelName}}
+                    />
+                )
             }
         />
     );
