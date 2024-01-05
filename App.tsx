@@ -135,7 +135,8 @@ const App = () => {
         }
         {
           selectedFeature === 'multiChannelLiveStreaming'  && (
-            <LivesStreamingOverMultipleChannels/>
+            config.product === "ILS" ?
+            <LivesStreamingOverMultipleChannels/> : <Text style = {{color: "white"}}> This feature is only available for ILS</Text>
           )
         }
       </View>
