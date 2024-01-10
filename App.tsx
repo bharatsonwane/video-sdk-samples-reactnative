@@ -15,6 +15,7 @@ import VirtualBackground from './src/virtual-background/virtualBackground';
 import AINoiseSuppression from './src/ai-noise-suppression/aiNoiseSuppression';
 import SpatialAudio from './src/spatial-audio/spatialAudio';
 import LivesStreamingOverMultipleChannels from './src/live-streaming-over-multiple-channels/livesStreamingOverMultipleChannels';
+import CustomAudioVideo from './src/custom-audio-and-video/customAudioVideo';
 
 const App = () => {
   const [selectedProduct, setSelectedProduct] = useState('Video Calling');
@@ -42,7 +43,8 @@ const App = () => {
     { label: 'Virtual Background', value: 'virtualBackground' },
     { label: 'AI Noise Suppression', value: 'noiseSuppression' },
     { label: '3d Spatial Audio', value: 'spatialAudio' },
-    { label: 'Live Streaming Over Multiple Channels', value: 'multiChannelLiveStreaming' }
+    { label: 'Live Streaming Over Multiple Channels', value: 'multiChannelLiveStreaming' },
+    { label: 'Custom audio and video sources', value: 'customAudioVideo' }
   ]);
 
   return (
@@ -138,6 +140,10 @@ const App = () => {
             config.product === "ILS" ?
             <LivesStreamingOverMultipleChannels/> : <Text style = {{color: "white"}}> This feature is only available for ILS</Text>
           )
+        }
+        {
+          selectedFeature === 'customAudioVideo'  &&(<CustomAudioVideo/>)
+
         }
       </View>
     </SafeAreaView>

@@ -27,3 +27,18 @@ export async function getAbsolutePath(filePath: string): Promise<string> {
   }
   return filePath;
 }
+
+export function getImagePath(filePath: string): string {
+  if (Platform.OS === 'android') {
+    if (filePath.startsWith('/assets/')) {
+      // const fileName = filePath;
+      const fileName = filePath.replace('/assets/', '');
+      const destPath = `${ExternalCachesDirectoryPath}/${fileName}`;
+      if (!exists(destPath)) {
+         copyFileAssets(fileName, destPath);
+      }
+      return destPath;
+    }
+  }
+  return  MainBundlePath + '/' + filePath;
+}

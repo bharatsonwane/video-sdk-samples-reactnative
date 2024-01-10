@@ -1,10 +1,10 @@
 import {EncryptionMode} from 'react-native-agora'
-import { getResourcePath } from '../../utils';
+import { getImagePath, getResourcePath } from '../../utils';
 const config: configType = {
     uid: 0,
-    appId: "",
+    appId: "0cc8ea75bf504ed08d3e8f5ef3c371bf",
     channelName: "demo",
-    token: "",
+    token: "007eJxTYHhfUBxhMo1tRtRrk4Wb4w/3v9XeX8S17v6bR20vrn3hKUlTYDBITrZITTQ3TUozNTBJTTGwSDFOtUgzTU0zTjY2N0xKq3SYmdoQyMjwj6OPmZEBAkF8FoaU1Nx8BgYAFnwiQQ==",
     serverUrl: "",
     tokenExpiryTime: 60,
     encryptionMode: EncryptionMode.Aes128Gcm2,
@@ -18,13 +18,13 @@ const config: configType = {
     mediaLocation: "https://www.appsloveworld.com/wp-content/uploads/2018/10/640.mp4",
     encryptionBase64: "",
     encryptionKey: "",
-    imagePath: getResourcePath('agora.png'),
+    imagePath: getImagePath('background.jpeg'),
     destChannelName : '',
     destChannelToken : '',
     destUid : 100,
-    secondChannelToken: "",
+    secondChannelToken: "007eJxTYJjzuLdvQUqTVvbRhZ/KbjeKZJ/T1bGdsG6jiIJuxIUOrTQFBoPkZIvURHPTpDRTA5PUFAOLFONUizTT1DTjZGNzw6S0kAPTUxsCGRlUfoYzMEIhiM/CkJKam8/AAABz5h/t",
     secondChannelUid: 100,
-    secondChannelName: ""
+    secondChannelName: "demo"
   };
   
   export type configType = {
@@ -46,12 +46,12 @@ const config: configType = {
     encryptionBase64: string,
     encryptionKey: string,
     imagePath: string,
-    destChannelName : string,
-    destChannelToken : string,
-    destUid : 100 // User ID that the user uses in the destination channel.
+    destChannelName: string,
+    destChannelToken: string,
+    destUid: 100,
+    secondChannelToken: string,
     secondChannelUid: number,
-    secondChannelName: string,
-    secondChannelToken: string
+    secondChannelName: string
   };
   
   export default config;
