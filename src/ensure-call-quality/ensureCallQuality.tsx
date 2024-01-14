@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import AgoraUI from "../agora-manager/agoraUI";
-import { View, Text, Button, TextInput } from "react-native";
+import { View, Text, Button, TextInput, Alert } from "react-native";
 import CallQualityManager from "./callQualityManager";
 import { styles } from "../agora-manager/agoraUI";
 
@@ -10,7 +10,7 @@ const EnsureCallQuality = () => {
 
   const startAndStopEchoTest = async () => {
     if (callQualityManager.joined) {
-      console.log("You can only run the echo test before joining the channel");
+      Alert.alert("You can only run the echo test before joining the channel");
       return;
     }
 

@@ -5,17 +5,17 @@ import { AudioMixingStateType } from 'react-native-agora';
 import AudioAndVoiceEffectsManager from "./audioAndVoiceEffectsManager";
 
 const effectCaptions = [
-  'Apply voice effect',
-  'Voice effect: Chat Beautifier',
-  'Voice effect: Singing Beautifier',
-  'Audio effect: Hulk',
-  'Audio effect: Voice Changer',
-  'Audio effect: Voice Equalization',
+  'Apply Voice Effect',
+  'Voice Effect: Chat Beautifier',
+  'Voice Effect: Singing Beautifier',
+  'Audio Effect: Hulk',
+  'Audio Effect: Voice Changer',
+  'Audio Effect: Voice Equalization',
 ];
 
 const AudioEffectsScreen = () => {
   const audioAndVoiceEffectsManager = AudioAndVoiceEffectsManager();
-  const [mixingBtnTxt, setMixingBtnTxt] = useState("Mix audio file");
+  const [mixingBtnTxt, setMixingBtnTxt] = useState("Start Audio Mixing");
 
   useEffect(() => {
     const { audioMixingState } = audioAndVoiceEffectsManager;
@@ -27,7 +27,7 @@ const AudioEffectsScreen = () => {
         setMixingBtnTxt("Pause audio mixing");
         break;
       default:
-        setMixingBtnTxt("Mix Audio File");
+        setMixingBtnTxt("Start Audio Mixing");
     }
   }, [audioAndVoiceEffectsManager.audioMixingState]);
 
@@ -60,7 +60,7 @@ const AudioEffectsScreen = () => {
           />
           <View>
             <Button title={mixingBtnTxt} onPress={audioAndVoiceEffectsManager.startAudioMixing} />
-            <Button title={audioAndVoiceEffectsManager.isEffectPlaying ? "Stop audio effect" : "Play audio effect"} onPress={playSoundEffect} />
+            <Button title={audioAndVoiceEffectsManager.isEffectPlaying ? "Stop Audio Effect" : "Play Audio Effect"} onPress={playSoundEffect} />
             <Button title={effectCaptions[audioAndVoiceEffectsManager.voiceEffectIndex]} onPress={audioAndVoiceEffectsManager.applyVoiceEffect} />
           </View>
           <View>

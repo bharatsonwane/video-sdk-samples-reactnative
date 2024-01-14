@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import AgoraUI from "../agora-manager/agoraUI";
-import { View, Button, TextInput } from "react-native";
+import { View, Button, TextInput, Text } from "react-native";
 import PlayMediaManager from "./playMediaManager";
 import { RtcSurfaceView, VideoSourceType, MediaPlayerState, VideoViewSetupMode } from "react-native-agora";
 import { styles } from "../agora-manager/agoraUI";
@@ -23,7 +23,7 @@ const PlayMedia = () => {
     [MediaPlayerState.PlayerStatePlaying]: "Pause Player",
     [MediaPlayerState.PlayerStatePaused]: "Resume Player",
     [MediaPlayerState.PlayerStateOpening]: "Opening Media File",
-    default: "Play Media",
+    default: "Play Media File",
   };
 
   const [playMediaBtnTxt, setPlayMediaBtnTxt] = useState(stateToBtnTextMap.default);
@@ -33,7 +33,6 @@ const PlayMedia = () => {
   }, [mediaPlayerState]);
 
   return (
-    <>
       <AgoraUI
         joined={joined}
         handleJoinCall={joinChannel}
@@ -53,21 +52,23 @@ const PlayMedia = () => {
             </View>
           </View>
         }
+        additionalViews = {
+          isPlaying && (
+            <View>
+              <Text style = {{color: "white"}}>Media Player</Text>
+              <RtcSurfaceView
+                style={styles.mediaPlayerView}
+                canvas={{
+                  uid: mediaPlayerRef.current?.getMediaPlayerId(),
+                  sourceType: VideoSourceType.VideoSourceMediaPlayer,
+                  setupMode: VideoViewSetupMode.VideoViewSetupAdd,
+                  mediaPlayerId: mediaPlayerRef.current?.getMediaPlayerId(),
+                }}
+              />
+            </View>
+          )
+        }
       />
-      <View style={{ padding: 10 }}>
-        {isPlaying && (
-          <RtcSurfaceView
-            style={styles.mediaPlayerView}
-            canvas={{
-              uid: mediaPlayerRef.current?.getMediaPlayerId(),
-              sourceType: VideoSourceType.VideoSourceMediaPlayer,
-              setupMode: VideoViewSetupMode.VideoViewSetupAdd,
-              mediaPlayerId: mediaPlayerRef.current?.getMediaPlayerId(),
-            }}
-          />
-        )}
-      </View>
-    </>
   );
 };
 

@@ -18,7 +18,7 @@ export const styles = StyleSheet.create({
     alignSelf: "center",
     borderColor: "white",
     borderWidth: 1,
-    height: 30,
+    height: 40,
   },
   mediaPlayerView: {width: '100%', height: 200 },
   sliderStyle: { width: 200, marginTop: 20, alignSelf: 'center' },
@@ -60,6 +60,7 @@ interface AgoraUIProps {
   handleJoinCall: () => void;
   setUserRole: (role: string) => void;
   additionalContent?: React.ReactNode;
+  additionalViews?: React.ReactNode
 }
 
 const AgoraUI: React.FC<AgoraUIProps> = ({
@@ -69,6 +70,7 @@ const AgoraUI: React.FC<AgoraUIProps> = ({
   handleJoinCall,
   setUserRole,
   additionalContent,
+  additionalViews
 }: AgoraUIProps) => {
   const [remoteUIs, setRemoteUIs] = useState<JSX.Element[]>([]);
   const [clientRole, setRole] = useState(false);
@@ -134,12 +136,13 @@ const AgoraUI: React.FC<AgoraUIProps> = ({
       <ScrollView style={{ padding: 5 }}>
         {joined ? (
           <View key={config.uid}>
-            <Text>Local user uid: {config.uid}</Text>
+            <Text style = {{color: "white"}}>Local user uid: {config.uid}</Text>
             <RtcSurfaceView canvas={{ uid: config.uid }} style={styles.videoView} />
           </View>
         ) : (
           <Text style = {{color: '#FFFFFF'}}>Join a channel</Text>
         )}
+        {additionalViews}
         {remoteUIs}
       </ScrollView>
     </View>
