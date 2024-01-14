@@ -12,7 +12,7 @@ const SpatialAudio = () => {
     remoteUIDs,
     setUserRole,
     setChannelName,
-    updateAudioPosition,
+    updateRemoteSpatialAudioPosition,
   } = SpatialAudioManager();
 
   const initialDistanceUnit = 5; // Initial value for the audio range, adjusted to be within the Slider range
@@ -40,7 +40,7 @@ const SpatialAudio = () => {
               maximumValue={10}
               step={1}
               value={distanceUnit}
-              onValueChange={(sourceDistance) => updateAudioPosition(sourceDistance)}
+              onValueChange={(sourceDistance) => updateRemoteSpatialAudioPosition(sourceDistance)}
             />
           </View>
         }

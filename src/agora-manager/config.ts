@@ -2,7 +2,7 @@ import {EncryptionMode} from 'react-native-agora'
 import { getResourcePath } from '../../utils';
 const config: configType = {
     uid: 0,
-    appId: "0cc8ea75bf504ed08d3e8f5ef3c371bf",
+    appId: "",
     channelName: "demo",
     token: "",
     serverUrl: "",
