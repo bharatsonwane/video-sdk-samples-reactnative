@@ -39,7 +39,7 @@ const App = () => {
     { label: 'Geofencing', value: 'geofencing' },
     { label: 'Screen share, mute, and volume control', value: 'productWorkflow' },
     { label: 'Virtual Background', value: 'virtualBackground' },
-    { label: 'AI Noise Suppression', value: 'noiseSuppression' }
+    { label: 'AI Noise Suppression', value: 'noiseSuppression' },
     { label: '3d Spatial Audio', value: 'spatialAudio' }
   ]);
 
